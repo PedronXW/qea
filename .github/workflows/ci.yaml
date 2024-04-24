@@ -1,4 +1,4 @@
-name: ci-auth-workflow
+name: ci-qea-workflow
 on: 
     pull_request:
         branches:
