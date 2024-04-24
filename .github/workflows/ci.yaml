@@ -2,7 +2,7 @@ name: ci-qea-workflow
 on: 
     pull_request:
         branches:
-            - main
+            - development
 jobs:
     check-application:
         strategy:
