@@ -10,11 +10,7 @@ const envSchema = z.object({
   JWT_SECRET: z.string(),
   VERIFY_EMAIL_SECRET: z.string(),
   RESET_PASSWORD_SECRET: z.string(),
-  DYNAMODB_TABLE: z.string(),
-  DYNAMODB_ACCESS_KEY: z.string(),
-  DYNAMODB_SECRET_KEY: z.string(),
-  DYNAMODB_REGION: z.string(),
-  DYNAMODB_ENDPOINT: z.string(),
+  DATABASE_URL: z.string(),
 })
 
 const _env = envSchema.safeParse(process.env)

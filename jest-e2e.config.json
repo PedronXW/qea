@@ -4,7 +4,6 @@
     "testEnvironment": "node",
     "testTimeout": 180000,
     "testRegex": "e2e.spec.ts$",
-    "preset": "@shelf/jest-dynamodb",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
     },
@@ -13,7 +12,7 @@
       "test/(.*)": "<rootDir>/test/$1"
     },
     "setupFilesAfterEnv": [
-      "./jest-setup.ts"
+      "./test/jest-setup.ts"
     ]
   }
   

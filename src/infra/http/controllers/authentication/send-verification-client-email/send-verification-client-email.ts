@@ -1,4 +1,4 @@
-import { SendVerificationClientEmailService } from '@/domain/application/services/send-verification-client-email'
+import { SendVerificationClientEmailService } from '@/domain/application/services/user/send-verification-client-email'
 import { z } from 'zod'
 
 const sendVerificationClientEmailZodSchema = z.object({
