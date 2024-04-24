@@ -1,0 +1,36 @@
+version: '3.9'
+
+services:
+  qea-pg:
+    image: postgres:16.2
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: docker
+      POSTGRES_DB: qeadb
+    volumes:
+      - ./data/pg:/data/postgres
+
+  qea:
+    build: .
+    depends_on:
+     - "qea-pg"
+    links:
+     - "qea-pg"
+    container_name: auth
+    restart: always
+    entrypoint: sleep infinity
+    ports: 
+      - 3333:3333
+    volumes:
+      - .:/usr/app
+
+  rabbitmq-cluster:
+      image: pedronx/rabbitmq
+      container_name: rabbitmq-cluster
+      ports: 
+        - 25672:25672
+        - 15672:15672
+        - 5672:5672
+      restart: always
