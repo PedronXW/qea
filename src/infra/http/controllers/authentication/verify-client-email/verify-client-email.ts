@@ -1,4 +1,4 @@
-import { VerifyClientEmailService } from '@/domain/application/services/verify-client-email'
+import { VerifyClientEmailService } from '@/domain/application/services/user/verify-client-email'
 import { ClientPresenter } from '@/infra/http/presenters/presenter-client'
 import { z } from 'zod'
 

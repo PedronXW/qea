@@ -1,4 +1,4 @@
-import { SendResetPasswordService } from '@/domain/application/services/send-reset-password'
+import { SendResetPasswordService } from '@/domain/application/services/user/send-reset-password'
 import { z } from 'zod'
 
 const sendResetPasswordZodSchema = z.object({

@@ -1,4 +1,4 @@
-import { FetchClientByIdService } from '@/domain/application/services/fetch-client-by-id'
+import { FetchClientByIdService } from '@/domain/application/services/user/fetch-client-by-id'
 import { DynamoClientRepository } from '@/infra/database/repositories/DynamoClientRepository'
 
 const clientRepository = new DynamoClientRepository()

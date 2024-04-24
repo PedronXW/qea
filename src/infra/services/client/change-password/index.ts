@@ -1,4 +1,4 @@
-import { ChangePasswordService } from '@/domain/application/services/change-password'
+import { ChangePasswordService } from '@/domain/application/services/user/change-password'
 import { Crypto } from '@/infra/cryptography/crypto'
 import { DynamoClientRepository } from '@/infra/database/repositories/DynamoClientRepository'
 

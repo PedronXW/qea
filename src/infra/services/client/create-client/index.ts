@@ -1,4 +1,4 @@
-import { CreateClientService } from '@/domain/application/services/create-client'
+import { CreateClientService } from '@/domain/application/services/user/create-client'
 import { Crypto } from '@/infra/cryptography/crypto'
 import { DynamoClientRepository } from '@/infra/database/repositories/DynamoClientRepository'
 

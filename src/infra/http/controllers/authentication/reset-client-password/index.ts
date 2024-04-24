@@ -1,4 +1,4 @@
-import { resetClientPasswordService } from '@/infra/services/client/reset-client-password'
+import { resetClientPasswordService } from '@/infra/services/authentication/reset-client-password'
 import { ResetClientPasswordController } from './reset-client-password'
 
 const resetClientPasswordController = new ResetClientPasswordController(
