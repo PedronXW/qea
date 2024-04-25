@@ -1,7 +1,7 @@
-import { authenticateDeveloperService } from '@/infra/services/authentication'
-import { AuthenticateClientController } from './authenticate-developer-controller'
+import { authenticateDeveloperService } from '@/infra/services/authentication/authentication'
+import { AuthenticateUserController } from './authenticate-user-controller'
 
-const authenticateDeveloperController = new AuthenticateClientController(
+const authenticateDeveloperController = new AuthenticateUserController(
   authenticateDeveloperService,
 )
 

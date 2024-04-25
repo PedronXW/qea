@@ -14,6 +14,7 @@ jobs:
           JWT_SECRET: mysecret
           VERIFY_EMAIL_SECRET: verifyemail
           RESET_PASSWORD_SECRET: resetpassword
+          DATABASE_URL: postgresql://postgres:docker@qea-pg:5432/qeadb?schema=public
         steps:
             - uses: actions/checkout@v2
             - uses: actions/setup-node@v2

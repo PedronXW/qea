@@ -1,14 +1,14 @@
-import { AuthenticateClientService } from '@/domain/application/services/user/authenticate-client'
+import { AuthenticateUserService } from '@/domain/application/services/user/authenticate-user'
 import { Crypto } from '@/infra/cryptography/crypto'
 import { Encrypter } from '@/infra/cryptography/encrypter'
-import { DynamoClientRepository } from '@/infra/database/repositories/DynamoClientRepository'
+import { PrismaUserRepository } from '@/infra/database/repositories/PrismaUserRepository'
 
 const encrypter = new Encrypter()
 const hashComparer = new Crypto()
-const clientRepository = new DynamoClientRepository()
+const userRepository = new PrismaUserRepository()
 
-const authenticateDeveloperService = new AuthenticateClientService(
-  clientRepository,
+const authenticateDeveloperService = new AuthenticateUserService(
+  userRepository,
   hashComparer,
   encrypter,
 )

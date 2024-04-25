@@ -1,6 +1,6 @@
 import { DomainEvents } from '@/@shared/events/event-dispatcher'
 import {
-  EditUser,
+  EditUserType,
   UserRepository,
 } from '@/domain/application/repositories/user-repository'
 import { User } from '@/domain/enterprise/entities/user'
@@ -51,7 +51,7 @@ export class InMemoryUserRepository implements UserRepository {
     return true
   }
 
-  async editUser(id: string, { name, email }: EditUser): Promise<User> {
+  async editUser(id: string, { name, email }: EditUserType): Promise<User> {
     const userIndex = this.users.findIndex((c) => c.id.getValue() === id)
 
     if (userIndex === -1) throw new Error('User not found')

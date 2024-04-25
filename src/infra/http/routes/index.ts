@@ -1,12 +1,12 @@
 import { Router } from 'express'
 import { authenticationRoutes } from './authentication'
-import { clientsRouter } from './clients'
+import { usersRouter } from './users'
 
 const router = Router()
 
 router.use('/sessions', authenticationRoutes)
 
-router.use('/clients', clientsRouter)
+router.use('/users', usersRouter)
 
 router.get('/healthz', (req, res) => {
   const data = {

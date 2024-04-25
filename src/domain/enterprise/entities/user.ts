@@ -9,7 +9,7 @@ type UserProps = {
   name: string
   email: string
   type: UserTypes
-  password: string
+  password?: string
   createdAt: Date | null
   updatedAt?: Date | null
 }
@@ -31,7 +31,7 @@ export class User extends Entity<UserProps> {
     this.props.email = email
   }
 
-  get password(): string {
+  get password(): string | undefined {
     return this.props.password
   }
 

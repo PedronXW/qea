@@ -45,7 +45,7 @@ describe('ResetUserPassword', () => {
     expect(
       await crypto.compare(
         'new_password',
-        inMemoryUserRepository.users[0].password.toString(),
+        inMemoryUserRepository.users[0].password!.toString(),
       ),
     ).toEqual(true)
   })

@@ -3,9 +3,10 @@ import request from 'supertest'
 
 describe('Send Reset Password Email', () => {
   it('should be able to send a reset password email', async () => {
-    await request(app).post('/clients').send({
+    await request(app).post('/users').send({
       name: 'John Doe',
       email: 'johndoe@johndoe.com',
+      type: 'ORGANIZER',
       password: '12345678',
     })
 
@@ -39,8 +40,9 @@ describe('Send Reset Password Email', () => {
   })
 
   it('should not be able to send a reset password email because a wrong email', async () => {
-    await request(app).post('/clients').send({
+    await request(app).post('/users').send({
       name: 'John Doe',
+      type: 'ORGANIZER',
       email: 'johndoe@johndoe.com',
       password: '12345678',
     })
@@ -67,6 +69,6 @@ describe('Send Reset Password Email', () => {
       })
 
     expect(sendMail.status).toBe(400)
-    expect(sendMail.body).toEqual({ error: 'Client non exists' })
+    expect(sendMail.body).toEqual({ error: 'User non exists' })
   })
 })
