@@ -1,13 +1,16 @@
+import { EntityId } from '@/@shared/entities/entity-id'
 import {
   EditUserType,
   UserRepository,
 } from '@/domain/application/repositories/user-repository'
 import { User } from '@/domain/enterprise/entities/user'
-import { prisma } from '..'
+import { PrismaClient } from '@prisma/client'
 
 export class PrismaUserRepository implements UserRepository {
+  prisma = new PrismaClient()
+
   async createUser(user: User): Promise<User> {
-    await prisma.user.create({
+    await this.prisma.user.create({
       data: {
         id: user.id.getValue(),
         name: user.name,
@@ -23,7 +26,7 @@ export class PrismaUserRepository implements UserRepository {
   }
 
   async changePassword(id: string, password: string): Promise<User> {
-    const user = await prisma.user.update({
+    const user = await this.prisma.user.update({
       where: { id },
       data: {
         password,
@@ -39,11 +42,20 @@ export class PrismaUserRepository implements UserRepository {
       },
     })
 
-    return User.create(user)
+    return User.create(
+      {
+        name: user.name,
+        email: user.email,
+        type: user.type,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+      },
+      new EntityId(id),
+    )
   }
 
   async deleteUser(id: string): Promise<boolean> {
-    await prisma.user.delete({
+    await this.prisma.user.delete({
       where: { id },
     })
 
@@ -61,7 +73,7 @@ export class PrismaUserRepository implements UserRepository {
       data.email = user.email
     }
 
-    const editedUser = await prisma.user.update({
+    const editedUser = await this.prisma.user.update({
       where: { id },
       data: {
         ...data,
@@ -77,11 +89,20 @@ export class PrismaUserRepository implements UserRepository {
       },
     })
 
-    return User.create(editedUser)
+    return User.create(
+      {
+        name: editedUser.name,
+        email: editedUser.email,
+        type: editedUser.type,
+        createdAt: editedUser.createdAt,
+        updatedAt: editedUser.updatedAt,
+      },
+      new EntityId(id),
+    )
   }
 
   async getUserByEmail(email: string): Promise<User | null> {
-    const user = await prisma.user.findUnique({
+    const user = await this.prisma.user.findUnique({
       where: { email },
       select: {
         id: true,
@@ -98,11 +119,21 @@ export class PrismaUserRepository implements UserRepository {
       return null
     }
 
-    return User.create(user)
+    return User.create(
+      {
+        name: user.name,
+        email: user.email,
+        password: user.password,
+        type: user.type,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+      },
+      new EntityId(user.id),
+    )
   }
 
   async getUserById(id: string): Promise<User | null> {
-    const user = await prisma.user.findUnique({
+    const user = await this.prisma.user.findUnique({
       where: { id },
       select: {
         id: true,
@@ -119,6 +150,16 @@ export class PrismaUserRepository implements UserRepository {
       return null
     }
 
-    return User.create(user)
+    return User.create(
+      {
+        name: user.name,
+        email: user.email,
+        password: user.password,
+        type: user.type,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+      },
+      new EntityId(id),
+    )
   }
 }

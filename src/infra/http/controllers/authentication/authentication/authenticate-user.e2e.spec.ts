@@ -4,21 +4,17 @@ import { app } from '../../../app'
 
 describe('Authentication', () => {
   it('should be able to authenticate a user', async () => {
-    const createClient = await request(app).post('/users').send({
+    await request(app).post('/users').send({
       name: 'John Doe',
       email: 'johndoe@johndoe.com',
       type: 'ORGANIZER',
       password: '12345678',
     })
 
-    console.log(createClient.body)
-
     const response = await request(app).post('/sessions').send({
       email: 'johndoe@johndoe.com',
       password: '12345678',
     })
-
-    console.log(response.body)
 
     expect(response.status).toBe(200)
     expect(response.body).toEqual({
