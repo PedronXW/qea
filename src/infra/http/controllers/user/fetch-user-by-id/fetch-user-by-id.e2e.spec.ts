@@ -24,6 +24,10 @@ describe('Fetch User By Id', () => {
       .set('Content-Type', 'application/json')
       .set('Authorization', `Bearer ${authentication.body.token}`)
 
+    console.log(fetchResponse.body)
+
+    console.log(id)
+
     expect(fetchResponse.status).toBe(200)
   })
 

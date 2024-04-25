@@ -2,15 +2,15 @@ import { Entity } from '@/@shared/entities/entity'
 import { EntityId } from '@/@shared/entities/entity-id'
 import { Optional } from '@/@shared/types/optional'
 
-type CommentProps = {
+type AnswerProps = {
   content: string
   authorId: EntityId
-  postId: EntityId
+  questionId: EntityId
   createdAt: Date | null
   updatedAt?: Date | null
 }
 
-export class Comment extends Entity<CommentProps> {
+export class Answer extends Entity<AnswerProps> {
   get content(): string {
     return this.props.content
   }
@@ -27,12 +27,12 @@ export class Comment extends Entity<CommentProps> {
     this.props.authorId = authorId
   }
 
-  get postId(): EntityId {
-    return this.props.postId
+  get questionId(): EntityId {
+    return this.props.questionId
   }
 
-  set postId(postId: EntityId) {
-    this.props.postId = postId
+  set questionId(questionId: EntityId) {
+    this.props.questionId = questionId
   }
 
   get createdAt(): Date | null {
@@ -52,13 +52,17 @@ export class Comment extends Entity<CommentProps> {
   }
 
   static create(
-    props: Optional<CommentProps, 'createdAt' | 'updatedAt'>,
-  ): Comment {
-    const comment = new Comment({
-      ...props,
-      createdAt: new Date(),
-      updatedAt: null,
-    })
-    return comment
+    props: Optional<AnswerProps, 'createdAt' | 'updatedAt'>,
+    id?: EntityId,
+  ): Answer {
+    const answer = new Answer(
+      {
+        ...props,
+        createdAt: new Date(),
+        updatedAt: null,
+      },
+      id,
+    )
+    return answer
   }
 }

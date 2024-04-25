@@ -17,6 +17,7 @@ describe('Create User', () => {
       type: 'ORGANIZER',
       email: 'johndoe@johndoe.com',
       createdAt: expect.any(String),
+      updatedAt: null,
     })
   })
 
