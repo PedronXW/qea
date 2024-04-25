@@ -10,23 +10,13 @@ describe('Send Reset Password Email', () => {
       password: '12345678',
     })
 
-    const auth = await request(app).post('/sessions').send({
+    await request(app).post('/sessions').send({
       email: 'johndoe@johndoe.com',
       password: '12345678',
     })
 
-    const verifyCode = await request(app)
-      .get('/sessions/verify')
-      .set('Authorization', `Bearer ${auth.body.token}`)
-      .send()
-
-    await request(app).put('/sessions/verify').send({
-      id: verifyCode.body.validatorCode,
-    })
-
     const getResetPassword = await request(app)
       .post('/sessions/reset-password')
-      .set('Authorization', `Bearer ${auth.body.token}`)
       .send({
         email: 'johndoe@johndoe.com',
       })
@@ -47,26 +37,14 @@ describe('Send Reset Password Email', () => {
       password: '12345678',
     })
 
-    const auth = await request(app).post('/sessions').send({
+    await request(app).post('/sessions').send({
       email: 'johndoe@johndoe.com',
       password: '12345678',
     })
 
-    const verifyCode = await request(app)
-      .get('/sessions/verify')
-      .set('Authorization', `Bearer ${auth.body.token}`)
-      .send()
-
-    await request(app).put('/sessions/verify').send({
-      id: verifyCode.body.validatorCode,
+    const sendMail = await request(app).post('/sessions/reset-password').send({
+      email: 'wrongemail@wrong.com',
     })
-
-    const sendMail = await request(app)
-      .post('/sessions/reset-password')
-      .set('Authorization', `Bearer ${auth.body.token}`)
-      .send({
-        email: 'wrongemail@wrong.com',
-      })
 
     expect(sendMail.status).toBe(400)
     expect(sendMail.body).toEqual({ error: 'User non exists' })

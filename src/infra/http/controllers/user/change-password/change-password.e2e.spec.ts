@@ -15,16 +15,6 @@ describe('Change Password', () => {
       password: '12345678',
     })
 
-    const verifyCode = await request(app)
-      .get('/sessions/verify')
-      .set('Content-Type', 'application/json')
-      .set('Authorization', `Bearer ${authentication.body.token}`)
-      .send()
-
-    await request(app).put('/sessions/verify').send({
-      id: verifyCode.body.validatorCode,
-    })
-
     const responseUpdate = await request(app)
       .put(`/users/password`)
       .set('Content-Type', 'application/json')
@@ -48,16 +38,6 @@ describe('Change Password', () => {
     const authentication = await request(app).post('/sessions').send({
       email: 'johndoe@johndoe.com',
       password: '12345678',
-    })
-
-    const verifyCode = await request(app)
-      .get('/sessions/verify')
-      .set('Content-Type', 'application/json')
-      .set('Authorization', `Bearer ${authentication.body.token}`)
-      .send()
-
-    await request(app).put('/sessions/verify').send({
-      id: verifyCode.body.validatorCode,
     })
 
     const responseUpdate = await request(app)

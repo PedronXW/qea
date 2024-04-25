@@ -14,7 +14,7 @@ describe('Create User', () => {
     expect(response.body).toEqual({
       id: expect.any(String),
       name: 'John Doe',
-      emailVerified: false,
+      type: 'ORGANIZER',
       email: 'johndoe@johndoe.com',
       createdAt: expect.any(String),
     })

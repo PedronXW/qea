@@ -19,16 +19,6 @@ describe('Fetch User By Id', () => {
       password: '12345678',
     })
 
-    const verifyCode = await request(app)
-      .get('/sessions/verify')
-      .set('Content-Type', 'application/json')
-      .set('Authorization', `Bearer ${authentication.body.token}`)
-      .send()
-
-    await request(app).put('/sessions/verify').send({
-      id: verifyCode.body.validatorCode,
-    })
-
     const fetchResponse = await request(app)
       .get(`/users/${id}`)
       .set('Content-Type', 'application/json')
@@ -50,16 +40,6 @@ describe('Fetch User By Id', () => {
     const authentication = await request(app).post('/sessions').send({
       email: 'johndoe@johndoe.com',
       password: '12345678',
-    })
-
-    const verifyCode = await request(app)
-      .get('/sessions/verify')
-      .set('Content-Type', 'application/json')
-      .set('Authorization', `Bearer ${authentication.body.token}`)
-      .send()
-
-    await request(app).put('/sessions/verify').send({
-      id: verifyCode.body.validatorCode,
     })
 
     const fetchResponse = await request(app)
