@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client'
 import { execSync } from 'child_process'
-import { randomUUID } from 'crypto'
+import { randomInt } from 'crypto'
 import 'dotenv/config'
 
 const prisma = new PrismaClient()
@@ -15,17 +15,25 @@ function generateUniqueDatabaseURL(schemaId: string) {
   return url.toString()
 }
 
-const schemaId = randomUUID()
+beforeEach(async () => {
+  const schemaId = randomInt(999999).toString()
 
-beforeAll(async () => {
+  process.env.SCHEMA_ID = schemaId
+
   const databaseURL = generateUniqueDatabaseURL(schemaId)
+
+  await prisma.$executeRawUnsafe(`CREATE SCHEMA IF NOT EXISTS test_${schemaId}`)
 
   process.env.DATABASE_URL = databaseURL
 
   execSync('npx prisma migrate deploy')
 })
 
-afterAll(async () => {
-  await prisma.$executeRawUnsafe(`DROP SCHEMA IF EXISTS "${schemaId}" CASCADE`)
+afterEach(async () => {
+  const schemaId = process.env.SCHEMA_ID
+
+  await prisma.$executeRawUnsafe(
+    `DROP SCHEMA IF EXISTS test_${schemaId} CASCADE`,
+  )
   await prisma.$disconnect()
 })

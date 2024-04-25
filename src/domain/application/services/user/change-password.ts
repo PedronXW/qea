@@ -28,7 +28,7 @@ export class ChangePasswordService {
 
     const passwordMatch = await this.hashComparer.compare(
       password,
-      user.password,
+      user.password!,
     )
 
     if (!passwordMatch) {

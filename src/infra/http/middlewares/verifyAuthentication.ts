@@ -1,6 +1,6 @@
 import { verify } from 'jsonwebtoken'
 
-import { ClientEmailNotVerifiedError } from '@/domain/application/errors/ClientEmailNotVerifiedError'
+import { UserEmailNotVerifiedError } from '@/domain/application/errors/UserEmailNotVerifiedError'
 import { env } from '@/infra/env'
 import { AppError } from '../errors/AppError'
 
@@ -26,8 +26,8 @@ export async function verifyAuthentication(request, response, next) {
 
     next()
   } catch (error) {
-    if (error instanceof ClientEmailNotVerifiedError) {
-      throw new AppError('Client e-mail not verified', 401)
+    if (error instanceof UserEmailNotVerifiedError) {
+      throw new AppError('User e-mail not verified', 401)
     } else {
       throw new AppError('Invalid token', 401)
     }
