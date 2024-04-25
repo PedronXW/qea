@@ -1,10 +1,10 @@
-import { EntityId } from '@/@shared/entities/entity-id'
 import {
   EditUserType,
   UserRepository,
 } from '@/domain/application/repositories/user-repository'
 import { User } from '@/domain/enterprise/entities/user'
 import { PrismaClient } from '@prisma/client'
+import { UserMapper } from '../mappers/user-mapper'
 
 export class PrismaUserRepository implements UserRepository {
   prisma = new PrismaClient()
@@ -42,16 +42,7 @@ export class PrismaUserRepository implements UserRepository {
       },
     })
 
-    return User.create(
-      {
-        name: user.name,
-        email: user.email,
-        type: user.type,
-        createdAt: user.createdAt,
-        updatedAt: user.updatedAt,
-      },
-      new EntityId(id),
-    )
+    return UserMapper.toDomain(user)
   }
 
   async deleteUser(id: string): Promise<boolean> {
@@ -89,16 +80,7 @@ export class PrismaUserRepository implements UserRepository {
       },
     })
 
-    return User.create(
-      {
-        name: editedUser.name,
-        email: editedUser.email,
-        type: editedUser.type,
-        createdAt: editedUser.createdAt,
-        updatedAt: editedUser.updatedAt,
-      },
-      new EntityId(id),
-    )
+    return UserMapper.toDomain(editedUser)
   }
 
   async getUserByEmail(email: string): Promise<User | null> {
@@ -119,17 +101,7 @@ export class PrismaUserRepository implements UserRepository {
       return null
     }
 
-    return User.create(
-      {
-        name: user.name,
-        email: user.email,
-        password: user.password,
-        type: user.type,
-        createdAt: user.createdAt,
-        updatedAt: user.updatedAt,
-      },
-      new EntityId(user.id),
-    )
+    return UserMapper.toDomain(user)
   }
 
   async getUserById(id: string): Promise<User | null> {
@@ -150,16 +122,6 @@ export class PrismaUserRepository implements UserRepository {
       return null
     }
 
-    return User.create(
-      {
-        name: user.name,
-        email: user.email,
-        password: user.password,
-        type: user.type,
-        createdAt: user.createdAt,
-        updatedAt: user.updatedAt,
-      },
-      new EntityId(id),
-    )
+    return UserMapper.toDomain(user)
   }
 }

@@ -1,15 +1,18 @@
 import { AggregateRoot } from '@/@shared/entities/aggregate-root'
 import { EntityId } from '@/@shared/entities/entity-id'
+import { Optional } from '@/@shared/types/optional'
+import { Slug } from './value-objects/slug'
 
-export type PostProps = {
+export type QuestionProps = {
   title: string
   content: string
+  slug: Slug
   authorId: EntityId
   createdAt: Date | null
   updatedAt?: Date | null
 }
 
-export class Post extends AggregateRoot<PostProps> {
+export class Question extends AggregateRoot<QuestionProps> {
   get title(): string {
     return this.props.title
   }
@@ -34,6 +37,10 @@ export class Post extends AggregateRoot<PostProps> {
     this.props.authorId = authorId
   }
 
+  get slug(): Slug {
+    return this.props.slug
+  }
+
   get createdAt(): Date | null {
     return this.props.createdAt
   }
@@ -50,13 +57,20 @@ export class Post extends AggregateRoot<PostProps> {
     this.props.updatedAt = updatedAt
   }
 
-  static create(props: Omit<PostProps, 'createdAt' | 'updatedAt'>): Post {
-    const post = new Post({
-      ...props,
-      createdAt: new Date(),
-      updatedAt: null,
-    })
+  static create(
+    props: Optional<QuestionProps, 'createdAt' | 'slug' | 'updatedAt'>,
+    id?: EntityId,
+  ): Question {
+    const question = new Question(
+      {
+        ...props,
+        slug: props.slug ?? Slug.createFromText(props.title),
+        createdAt: props.createdAt ?? new Date(),
+        updatedAt: props.updatedAt ?? null,
+      },
+      id,
+    )
 
-    return post
+    return question
   }
 }
