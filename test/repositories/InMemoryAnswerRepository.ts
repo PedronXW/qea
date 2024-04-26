@@ -4,12 +4,23 @@ import { Answer } from '@/domain/enterprise/entities/answer'
 export class InMemoryAnswerRepository implements AnswerRepository {
   answers: Answer[] = []
 
-  async create(answer: Answer): Promise<Answer> {
+  async createAnswer(answer: Answer): Promise<Answer> {
     this.answers.push(answer)
     return answer
   }
 
-  async findByQuestionId(
+  async findAnswerByAuthorIdInASpecificQuestion(
+    authorId: string,
+    questionId: string,
+  ): Promise<Answer> {
+    return this.answers.filter(
+      (answer) =>
+        answer.authorId.getValue() === authorId &&
+        answer.questionId.getValue() === questionId,
+    )[0]
+  }
+
+  async findAnswersByQuestionId(
     questionId: string,
     page: number,
     limit: number,
@@ -23,18 +34,18 @@ export class InMemoryAnswerRepository implements AnswerRepository {
       .slice(startIndex, endIndex)
   }
 
-  async findById(id: string): Promise<Answer | null> {
+  async findAnswerById(id: string): Promise<Answer | null> {
     return this.answers.find((answer) => answer.id.getValue() === id) || null
   }
 
-  async delete(id: string): Promise<boolean> {
+  async deleteAnswer(id: string): Promise<boolean> {
     this.answers = this.answers.filter((answer) => answer.id.getValue() !== id)
 
     return true
   }
 
-  async update(content: string): Promise<Answer> {
-    const answer = this.answers.find((answer) => answer.content === content)
+  async updateAnswer(id: string, content: string): Promise<Answer> {
+    const answer = this.answers.find((answer) => answer.id.getValue() === id)
 
     answer!.content = content
 

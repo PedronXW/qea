@@ -15,6 +15,14 @@ export abstract class QuestionRepository {
 
   abstract findQuestionById(id: string): Promise<Question | null>
   abstract deleteQuestion(id: string): Promise<boolean>
-  abstract findAll(page: number, limit: number): Promise<Question[]>
-  abstract updateQuestion(id: string, props: EditQuestionProps): Promise<void>
+  abstract findAllQuestions(
+    authorId: string,
+    page: number,
+    limit: number,
+  ): Promise<Question[]>
+
+  abstract updateQuestion(
+    id: string,
+    props: EditQuestionProps,
+  ): Promise<Question>
 }
