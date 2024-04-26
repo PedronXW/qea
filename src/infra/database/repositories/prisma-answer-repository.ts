@@ -7,7 +7,7 @@ export class PrismaAnswerRepository implements AnswerRepository {
   prisma = new PrismaClient()
 
   async createAnswer(answer: Answer): Promise<Answer> {
-    await this.prisma.answer.create({
+    const newAnswer = await this.prisma.answer.create({
       data: {
         id: answer.id.getValue(),
         content: answer.content,
@@ -18,19 +18,23 @@ export class PrismaAnswerRepository implements AnswerRepository {
       },
     })
 
-    return AnswerMapper.toDomain(answer)
+    return AnswerMapper.toDomain(newAnswer)
   }
 
   async findAnswerByAuthorIdInASpecificQuestion(
     authorId: string,
     questionId: string,
-  ): Promise<Answer> {
+  ): Promise<Answer | null> {
     const answer = await this.prisma.answer.findFirst({
       where: {
         authorId,
         questionId,
       },
     })
+
+    if (!answer) {
+      return null
+    }
 
     return AnswerMapper.toDomain(answer)
   }

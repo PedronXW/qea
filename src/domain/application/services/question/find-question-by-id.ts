@@ -10,6 +10,7 @@ export class FindQuestionByIdService {
 
   async execute(questionId: string): Promise<FindQuestionByIdServiceResponse> {
     const question = await this.questionRepository.findQuestionById(questionId)
+
     if (!question) {
       return left(new QuestionNonExistsError())
     }

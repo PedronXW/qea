@@ -1,8 +1,8 @@
 import { Question } from '@/domain/enterprise/entities/question'
 
 export type EditQuestionProps = {
-  title: string
-  content: string
+  title?: string
+  content?: string
 }
 
 export abstract class QuestionRepository {

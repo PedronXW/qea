@@ -8,10 +8,12 @@ export class FindAllQuestionsService {
   constructor(private readonly questionRepository: QuestionRepository) {}
 
   async execute(
+    authorId: string,
     page: number,
     limit: number,
   ): Promise<FindAllQuestionsServiceResponse> {
     const questions = await this.questionRepository.findAllQuestions(
+      authorId,
       page,
       limit,
     )
