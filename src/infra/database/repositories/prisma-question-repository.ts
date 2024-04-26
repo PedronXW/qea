@@ -62,16 +62,30 @@ export class PrismaQuestionRepository implements QuestionRepository {
     return true
   }
 
-  async findAll(page: number, limit: number): Promise<Question[]> {
+  async findAllQuestions(
+    authorId: string,
+    page: number,
+    limit: number,
+  ): Promise<Question[]> {
     const questions = await this.prisma.question.findMany({
       skip: page,
       take: limit,
+      include: {
+        answers: {
+          where: {
+            authorId,
+          },
+        },
+      },
     })
 
     return questions.map(QuestionMapper.toDomain)
   }
 
-  async updateQuestion(id: string, props: EditQuestionProps): Promise<void> {
+  async updateQuestion(
+    id: string,
+    props: EditQuestionProps,
+  ): Promise<Question> {
     const data = {} as EditQuestionProps
 
     if (props.title) {
@@ -82,7 +96,7 @@ export class PrismaQuestionRepository implements QuestionRepository {
       data.content = props.content
     }
 
-    await this.prisma.question.update({
+    const newQuestion = await this.prisma.question.update({
       where: {
         id,
       },
@@ -91,5 +105,7 @@ export class PrismaQuestionRepository implements QuestionRepository {
         updatedAt: new Date(),
       },
     })
+
+    return QuestionMapper.toDomain(newQuestion)
   }
 }

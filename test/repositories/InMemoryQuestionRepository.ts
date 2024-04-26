@@ -1,5 +1,5 @@
 import {
-  QuestionEditProps,
+  EditQuestionProps,
   QuestionRepository,
 } from '@/domain/application/repositories/question-repository'
 import { Question } from '@/domain/enterprise/entities/question'
@@ -7,12 +7,12 @@ import { Question } from '@/domain/enterprise/entities/question'
 export class InMemoryQuestionRepository implements QuestionRepository {
   questions: Question[] = []
 
-  async create(question: Question): Promise<Question> {
+  async createQuestion(question: Question): Promise<Question> {
     this.questions.push(question)
     return question
   }
 
-  async findBySlug(
+  async findQuestionBySlug(
     slug: string,
     page: number,
     limit: number,
@@ -26,13 +26,13 @@ export class InMemoryQuestionRepository implements QuestionRepository {
       .slice(startIndex, endIndex)
   }
 
-  async findById(id: string): Promise<Question | null> {
+  async findQuestionById(id: string): Promise<Question | null> {
     return (
       this.questions.find((question) => question.id.getValue() === id) || null
     )
   }
 
-  async delete(id: string): Promise<boolean> {
+  async deleteQuestion(id: string): Promise<boolean> {
     this.questions = this.questions.filter(
       (question) => question.id.getValue() !== id,
     )
@@ -40,7 +40,11 @@ export class InMemoryQuestionRepository implements QuestionRepository {
     return true
   }
 
-  async findAll(page: number, limit: number): Promise<Question[]> {
+  async findAllQuestions(
+    authorId: string,
+    page: number,
+    limit: number,
+  ): Promise<Question[]> {
     const startIndex = (page - 1) * limit
 
     const endIndex = page * limit
@@ -48,15 +52,17 @@ export class InMemoryQuestionRepository implements QuestionRepository {
     return this.questions.slice(startIndex, endIndex)
   }
 
-  async update(
+  async updateQuestion(
     id: string,
-    { content, title }: QuestionEditProps,
-  ): Promise<void> {
+    { content, title }: EditQuestionProps,
+  ): Promise<Question> {
     const question = this.questions.find(
       (question) => question.id.getValue() === id,
     )
 
     question!.content = content
     question!.title = title
+
+    return question!
   }
 }
