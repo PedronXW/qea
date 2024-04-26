@@ -12,8 +12,6 @@ describe('Fetch User By Id', () => {
 
     const { id } = response.body
 
-    jest.setTimeout(20000)
-
     const authentication = await request(app).post('/sessions').send({
       email: 'johndoe@johndoe.com',
       password: '12345678',
@@ -23,10 +21,6 @@ describe('Fetch User By Id', () => {
       .get(`/users/${id}`)
       .set('Content-Type', 'application/json')
       .set('Authorization', `Bearer ${authentication.body.token}`)
-
-    console.log(fetchResponse.body)
-
-    console.log(id)
 
     expect(fetchResponse.status).toBe(200)
   })
@@ -38,8 +32,6 @@ describe('Fetch User By Id', () => {
       email: 'johndoe@johndoe.com',
       password: '12345678',
     })
-
-    jest.setTimeout(20000)
 
     const authentication = await request(app).post('/sessions').send({
       email: 'johndoe@johndoe.com',

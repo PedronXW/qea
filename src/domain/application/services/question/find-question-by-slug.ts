@@ -18,12 +18,12 @@ export class FindQuestionBySlugService {
     page,
     slug,
   }: FindQuestionBySlugServiceRequest): Promise<FindQuestionBySlugServiceResponse> {
-    const question = await this.questionRepository.findQuestionBySlug(
+    const questions = await this.questionRepository.findQuestionBySlug(
       slug,
       page,
       limit,
     )
 
-    return right(question)
+    return right(questions)
   }
 }

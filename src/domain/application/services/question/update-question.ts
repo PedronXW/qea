@@ -5,8 +5,8 @@ import { QuestionRepository } from '../../repositories/question-repository'
 
 type UpdateQuestionServiceRequest = {
   questionId: string
-  title: string
-  content: string
+  title?: string
+  content?: string
 }
 
 export type UpdateQuestionServiceResponse = Either<

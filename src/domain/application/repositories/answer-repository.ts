@@ -12,7 +12,7 @@ export abstract class AnswerRepository {
   abstract findAnswerByAuthorIdInASpecificQuestion(
     authorId: string,
     questionId: string,
-  ): Promise<Answer>
+  ): Promise<Answer | null>
 
   abstract deleteAnswer(id: string): Promise<boolean>
   abstract updateAnswer(id: string, content: string): Promise<Answer>

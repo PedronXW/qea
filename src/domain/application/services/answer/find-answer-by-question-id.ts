@@ -2,21 +2,21 @@ import { Either, right } from '@/@shared/either'
 import { Answer } from '@/domain/enterprise/entities/answer'
 import { AnswerRepository } from '../../repositories/answer-repository'
 
-type FindAnswerByQuestionIdServiceRequest = {
+type FindAnswersByQuestionIdServiceRequest = {
   questionId: string
   page: number
   limit: number
 }
 
-type FindAnswerByQuestionIdServiceResponse = Either<null, Answer[]>
+type FindAnswersByQuestionIdServiceResponse = Either<null, Answer[]>
 
-export class FindAnswerByQuestionIdService {
+export class FindAnswersByQuestionIdService {
   constructor(private answerRepository: AnswerRepository) {}
   async execute({
     questionId,
     page,
     limit,
-  }: FindAnswerByQuestionIdServiceRequest): Promise<FindAnswerByQuestionIdServiceResponse> {
+  }: FindAnswersByQuestionIdServiceRequest): Promise<FindAnswersByQuestionIdServiceResponse> {
     const answers = await this.answerRepository.findAnswersByQuestionId(
       questionId,
       page,

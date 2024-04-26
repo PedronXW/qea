@@ -21,7 +21,7 @@ describe('Find All Questions', () => {
 
     await inMemoryQuestionRepository.createQuestion(question)
 
-    const response = await sut.execute(1, 10)
+    const response = await sut.execute(question.authorId.getValue(), 1, 10)
 
     expect(response.isRight()).toBeTruthy()
     expect(response.value).toHaveLength(1)
