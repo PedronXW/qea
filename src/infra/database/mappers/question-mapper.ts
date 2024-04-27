@@ -8,6 +8,7 @@ export class QuestionMapper {
         title: raw.title,
         content: raw.content,
         authorId: new EntityId(raw.authorId),
+        answeredByCurrentUser: raw.answers ? raw.answers.length > 0 : undefined,
         createdAt: new Date(raw.createdAt),
         updatedAt: raw.updatedAt ? new Date(raw.updatedAt) : null,
       },

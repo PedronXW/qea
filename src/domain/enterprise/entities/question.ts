@@ -8,6 +8,7 @@ export type QuestionProps = {
   content: string
   slug: Slug
   authorId: EntityId
+  answeredByCurrentUser?: boolean
   createdAt: Date | null
   updatedAt?: Date | null
 }
@@ -57,13 +58,25 @@ export class Question extends AggregateRoot<QuestionProps> {
     this.props.updatedAt = updatedAt
   }
 
+  get answeredByCurrentUser(): boolean | undefined {
+    return this.props.answeredByCurrentUser
+  }
+
+  set answeredByCurrentUser(answeredByCurrentUser: boolean | undefined) {
+    this.props.answeredByCurrentUser = answeredByCurrentUser
+  }
+
   static create(
-    props: Optional<QuestionProps, 'createdAt' | 'slug' | 'updatedAt'>,
+    props: Optional<
+      QuestionProps,
+      'createdAt' | 'slug' | 'updatedAt' | 'answeredByCurrentUser'
+    >,
     id?: EntityId,
   ): Question {
     const question = new Question(
       {
         ...props,
+        answeredByCurrentUser: props.answeredByCurrentUser ?? undefined,
         slug: props.slug ?? Slug.createFromText(props.title),
         createdAt: props.createdAt ?? new Date(),
         updatedAt: props.updatedAt ?? null,

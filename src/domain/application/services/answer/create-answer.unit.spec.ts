@@ -1,7 +1,7 @@
 import { EntityId } from '@/@shared/entities/entity-id'
 import { Answer } from '@/domain/enterprise/entities/answer'
 import { InMemoryAnswerRepository } from 'test/repositories/InMemoryAnswerRepository'
-import { QuestionAnsweredError } from '../../errors/QuestionAnsweredError'
+import { AnswerAndQuestionOwnerError } from '../../errors/AnswerAndQuestionOwnerError'
 import { CreateAnswerService } from './create-answer'
 
 let sut: CreateAnswerService
@@ -40,6 +40,6 @@ describe('Create Answer', () => {
     })
 
     expect(result.isLeft()).toBe(true)
-    expect(result.value).toBeInstanceOf(QuestionAnsweredError)
+    expect(result.value).toBeInstanceOf(AnswerAndQuestionOwnerError)
   })
 })

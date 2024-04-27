@@ -35,7 +35,9 @@ describe('SendResetPassword', () => {
     )
 
     expect(result.isRight()).toBe(true)
-    expect(encryptedId).toEqual(user.id.getValue())
+    expect(encryptedId).toEqual({
+      id: user.id.getValue(),
+    })
   })
 
   it('should not be able to send a reset password email because a invalid email', async () => {

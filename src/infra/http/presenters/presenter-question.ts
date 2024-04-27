@@ -7,6 +7,7 @@ export class QuestionPresenter {
       title: question.title,
       content: question.content,
       slug: question.slug.value,
+      answeredByCurrentUser: question.answeredByCurrentUser,
       authorId: question.authorId.getValue(),
       createdAt: question.createdAt,
       updatedAt: question.updatedAt,
