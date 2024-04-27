@@ -1,15 +1,15 @@
 import { EntityId } from '@/@shared/entities/entity-id'
 import { Answer } from '@/domain/enterprise/entities/answer'
 import { InMemoryAnswerRepository } from 'test/repositories/InMemoryAnswerRepository'
-import { FindAnswerByQuestionIdService } from './find-answer-by-question-id'
+import { FindAnswersByQuestionIdService } from './find-answer-by-question-id'
 
-let sut: FindAnswerByQuestionIdService
+let sut: FindAnswersByQuestionIdService
 let inMemoryAnswerRepository: InMemoryAnswerRepository
 
 describe('Find Answer By Question Id', () => {
   beforeEach(() => {
     inMemoryAnswerRepository = new InMemoryAnswerRepository()
-    sut = new FindAnswerByQuestionIdService(inMemoryAnswerRepository)
+    sut = new FindAnswersByQuestionIdService(inMemoryAnswerRepository)
   })
 
   it('should be able to find an answer by question id', async () => {
@@ -23,6 +23,7 @@ describe('Find Answer By Question Id', () => {
 
     const result = await sut.execute({
       questionId: newAnswer.questionId.getValue(),
+      authorType: 'ORGANIZER',
       page: 1,
       limit: 10,
     })

@@ -1,6 +1,7 @@
 import { Either, left, right } from '@/@shared/either'
 import { EntityId } from '@/@shared/entities/entity-id'
 import { Answer } from '@/domain/enterprise/entities/answer'
+import { AnswerAndQuestionOwnerError } from '../../errors/AnswerAndQuestionOwnerError'
 import { QuestionAnsweredError } from '../../errors/QuestionAnsweredError'
 import { AnswerRepository } from '../../repositories/answer-repository'
 
@@ -25,6 +26,10 @@ export class CreateAnswerService {
         authorId,
         questionId,
       )
+
+    if (isAnswered?.authorId.getValue() === authorId) {
+      return left(new AnswerAndQuestionOwnerError())
+    }
 
     if (isAnswered) {
       return left(new QuestionAnsweredError())

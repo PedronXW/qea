@@ -1,5 +1,5 @@
 import { Either, left, right } from '@/@shared/either'
-import { User } from '@/domain/enterprise/entities/user'
+import { User, UserTypes } from '@/domain/enterprise/entities/user'
 import { HashGenerator } from '../../criptography/hash-generator'
 import { UserAlreadyExistsError } from '../../errors/UserAlreadyExistsError'
 import { UserRepository } from '../../repositories/user-repository'
@@ -7,7 +7,7 @@ import { UserRepository } from '../../repositories/user-repository'
 interface CreateUserServiceRequest {
   name: string
   email: string
-  type: 'PARTICIPANT' | 'ORGANIZER'
+  type: UserTypes
   password: string
 }
 
