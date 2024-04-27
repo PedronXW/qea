@@ -1,11 +1,13 @@
 import { verify } from 'jsonwebtoken'
 
 import { UserEmailNotVerifiedError } from '@/domain/application/errors/UserEmailNotVerifiedError'
+import { UserTypes } from '@/domain/enterprise/entities/user'
 import { env } from '@/infra/env'
 import { AppError } from '../errors/AppError'
 
 interface IPayload {
-  sub: string
+  id: string
+  type: UserTypes
 }
 
 export async function verifyAuthentication(request, response, next) {
@@ -18,10 +20,14 @@ export async function verifyAuthentication(request, response, next) {
   const [, token] = authHeader.split(' ')
 
   try {
-    const { sub: id } = verify(token, env.JWT_SECRET) as IPayload
+    const { id, type } = verify(token, env.JWT_SECRET) as IPayload
 
     request.user = {
       id,
+    }
+
+    request.permission = {
+      type,
     }
 
     next()

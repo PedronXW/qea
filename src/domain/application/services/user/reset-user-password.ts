@@ -23,9 +23,12 @@ export class ResetUserPasswordService {
     id,
     password,
   }: ResetUserPasswordServiceRequest): Promise<ResetUserPasswordServiceResponse> {
-    const userId = await this.encrypter.decrypt(id, env.RESET_PASSWORD_SECRET)
+    const { id: translatedId } = await this.encrypter.decrypt(
+      id,
+      env.RESET_PASSWORD_SECRET,
+    )
 
-    const userExists = await this.userRepository.getUserById(userId)
+    const userExists = await this.userRepository.getUserById(translatedId)
 
     if (!userExists) {
       return left(new UserNonExistsError())
@@ -33,7 +36,7 @@ export class ResetUserPasswordService {
 
     const hashedPassword = await this.hashGenerator.hash(password)
 
-    await this.userRepository.changePassword(userId, hashedPassword)
+    await this.userRepository.changePassword(translatedId, hashedPassword)
 
     return right(null)
   }

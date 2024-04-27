@@ -14,6 +14,7 @@ describe('Create Question', () => {
     const response = await sut.execute({
       authorId: 'author-id',
       content: 'Question content',
+      authorType: 'ORGANIZER',
       title: 'Question title',
     })
 

@@ -60,8 +60,8 @@ export class InMemoryQuestionRepository implements QuestionRepository {
       (question) => question.id.getValue() === id,
     )
 
-    question!.content = content
-    question!.title = title
+    question!.content = content || question!.content
+    question!.title = title || question!.title
 
     return question!
   }

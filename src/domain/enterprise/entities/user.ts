@@ -3,7 +3,7 @@ import { EntityId } from '../../../@shared/entities/entity-id'
 import { Optional } from '../../../@shared/types/optional'
 import { CreateUserEvent } from '../events/CreateUserEvent'
 
-type UserTypes = 'ORGANIZER' | 'PARTICIPANT'
+export type UserTypes = 'ORGANIZER' | 'PARTICIPANT'
 
 type UserProps = {
   name: string

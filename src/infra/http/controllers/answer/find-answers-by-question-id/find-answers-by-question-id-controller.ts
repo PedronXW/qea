@@ -11,6 +11,10 @@ const findAnswersByQuestionIdParamsSchema = z.object({
   id: z.string(),
 })
 
+const findAnswersByQuestionIdPermissionSchema = z.object({
+  type: z.enum(['ORGANIZER', 'PARTICIPANT']),
+})
+
 export class FindAnswersByQuestionIdController {
   constructor(
     private findAnswersByQuestionIdUseCase: FindAnswersByQuestionIdService,
@@ -21,14 +25,19 @@ export class FindAnswersByQuestionIdController {
 
     const { id } = findAnswersByQuestionIdParamsSchema.parse(req.params)
 
+    const { type } = findAnswersByQuestionIdPermissionSchema.parse(
+      req.permission,
+    )
+
     const answers = await this.findAnswersByQuestionIdUseCase.execute({
       questionId: id,
       page,
+      authorType: type,
       limit,
     })
 
     if (answers.isLeft()) {
-      return res.status(404).json(answers.value)
+      return res.status(401).send({ error: answers.value.message })
     }
 
     return res.status(200).json(answers.value!.map(AnswerPresenter.toHTTP))
