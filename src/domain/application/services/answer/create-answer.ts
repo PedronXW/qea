@@ -1,9 +1,11 @@
 import { Either, left, right } from '@/@shared/either'
 import { EntityId } from '@/@shared/entities/entity-id'
 import { Answer } from '@/domain/enterprise/entities/answer'
-import { AnswerAndQuestionOwnerError } from '../../errors/AnswerAndQuestionOwnerError'
+import { AnswerAndQuestionSameOwnerError } from '../../errors/AnswerAndQuestionSameOwnerError'
 import { QuestionAnsweredError } from '../../errors/QuestionAnsweredError'
+import { QuestionNonExistsError } from '../../errors/QuestionNonExistsError'
 import { AnswerRepository } from '../../repositories/answer-repository'
+import { QuestionRepository } from '../../repositories/question-repository'
 
 export interface CreateAnswerServiceRequest {
   content: string
@@ -11,25 +13,39 @@ export interface CreateAnswerServiceRequest {
   questionId: string
 }
 
-type CreateAnswerServiceResponse = Either<QuestionAnsweredError, Answer>
+type CreateAnswerServiceResponse = Either<
+  | QuestionAnsweredError
+  | QuestionNonExistsError
+  | AnswerAndQuestionSameOwnerError,
+  Answer
+>
 
 export class CreateAnswerService {
-  constructor(private answerRepository: AnswerRepository) {}
+  constructor(
+    private answerRepository: AnswerRepository,
+    private questionRepository: QuestionRepository,
+  ) {}
 
   async execute({
     authorId,
     content,
     questionId,
   }: CreateAnswerServiceRequest): Promise<CreateAnswerServiceResponse> {
+    const question = await this.questionRepository.findQuestionById(questionId)
+
+    if (!question) {
+      return left(new QuestionNonExistsError())
+    }
+
+    if (question!.authorId.getValue() === authorId) {
+      return left(new AnswerAndQuestionSameOwnerError())
+    }
+
     const isAnswered =
       await this.answerRepository.findAnswerByAuthorIdInASpecificQuestion(
         authorId,
         questionId,
       )
-
-    if (isAnswered?.authorId.getValue() === authorId) {
-      return left(new AnswerAndQuestionOwnerError())
-    }
 
     if (isAnswered) {
       return left(new QuestionAnsweredError())

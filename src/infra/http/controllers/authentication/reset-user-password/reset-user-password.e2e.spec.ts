@@ -23,10 +23,10 @@ describe('Reset User Password', () => {
 
     const response = await request(app).put('/sessions/reset-password').send({
       id: getResetPassword.body.validatorCode,
-      newPassword: '123456789',
+      password: '123456789',
     })
 
-    expect(response.status).toBe(200)
+    expect(response.status).toBe(204)
   })
 
   it('should not be able to reset a user password because a invalid signature jwt', async () => {
@@ -39,7 +39,7 @@ describe('Reset User Password', () => {
 
     const response = await request(app).put('/sessions/reset-password').send({
       id: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c', // invalid signature
-      newPassword: '123456789',
+      password: '123456789',
     })
 
     expect(response.status).toBe(500)
@@ -59,7 +59,7 @@ describe('Reset User Password', () => {
 
     const response = await request(app).put('/sessions/reset-password').send({
       id: 'invalid-id', // invalid id - not a jwt
-      newPassword: '123456789',
+      password: '123456789',
     })
 
     expect(response.status).toBe(500)

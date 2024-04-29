@@ -1,19 +1,19 @@
-import { FetchUserByIdService } from '@/domain/application/services/user/fetch-user-by-id'
+import { FindUserByIdService } from '@/domain/application/services/user/find-user-by-id'
 import { UserPresenter } from '@/infra/http/presenters/presenter-user'
 import { Response } from 'express'
 import { z } from 'zod'
 
-const fetchUserByIdZodSchema = z.object({
+const findUserByIdZodSchema = z.object({
   id: z.string().uuid(),
 })
 
-export class FetchUserByIdController {
-  constructor(private readonly fetchUserByIdService: FetchUserByIdService) {}
+export class FindUserByIdController {
+  constructor(private readonly findUserByIdService: FindUserByIdService) {}
 
   async handle(req, res): Promise<Response> {
-    const { id } = fetchUserByIdZodSchema.parse(req.params)
+    const { id } = findUserByIdZodSchema.parse(req.user)
 
-    const user = await this.fetchUserByIdService.execute({ id })
+    const user = await this.findUserByIdService.execute({ id })
 
     if (user.isLeft()) {
       return res.status(400).send({ error: user.value.message })

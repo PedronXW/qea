@@ -23,10 +23,10 @@ describe('Send Reset Password Email', () => {
 
     const response = await request(app).put('/sessions/reset-password').send({
       id: getResetPassword.body.validatorCode,
-      newPassword: '123456789',
+      password: '123456789',
     })
 
-    expect(response.status).toBe(200)
+    expect(response.status).toBe(204)
   })
 
   it('should not be able to send a reset password email because a wrong email', async () => {

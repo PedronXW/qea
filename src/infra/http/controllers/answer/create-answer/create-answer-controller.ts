@@ -4,7 +4,7 @@ import { z } from 'zod'
 
 const createAnswerZodSchema = z.object({
   questionId: z.string(),
-  content: z.string().min(1),
+  content: z.string().min(3),
 })
 
 const createAnswerZodQuerySchema = z.object({
@@ -25,7 +25,7 @@ export class CreateAnswerController {
     })
 
     if (answer.isLeft()) {
-      return res.status(400).send(answer.value)
+      return res.status(400).send({ error: answer.value.message })
     }
 
     return res.status(201).send(AnswerPresenter.toHTTP(answer.value))

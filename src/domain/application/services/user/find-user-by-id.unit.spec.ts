@@ -1,18 +1,18 @@
 import { makeUser } from 'test/factories/user-factory'
 import { InMemoryUserRepository } from 'test/repositories/InMemoryUserRepository'
 import { UserNonExistsError } from '../../errors/UserNonExists'
-import { FetchUserByEmailService } from './fetch-user-by-email'
+import { FindUserByIdService } from './find-user-by-id'
 
-let sut: FetchUserByEmailService
+let sut: FindUserByIdService
 let inMemoryUserRepository: InMemoryUserRepository
 
-describe('Fetch User By Email', () => {
+describe('Find User By ID', () => {
   beforeEach(() => {
     inMemoryUserRepository = new InMemoryUserRepository()
-    sut = new FetchUserByEmailService(inMemoryUserRepository)
+    sut = new FindUserByIdService(inMemoryUserRepository)
   })
 
-  it('should be able to fetch a user by email', async () => {
+  it('should be able to find a user by id', async () => {
     const user = makeUser({
       name: 'any_name',
       email: 'any_email@gmail.com',
@@ -20,13 +20,13 @@ describe('Fetch User By Email', () => {
 
     await inMemoryUserRepository.createUser(user)
 
-    const result = await sut.execute({ email: user.email })
+    const result = await sut.execute({ id: user.id.getValue() })
 
     expect(result.isRight()).toBe(true)
     expect(inMemoryUserRepository.users[0].name).toEqual('any_name')
   })
 
-  it('should be able to not fetch a user by email because a wrong email', async () => {
+  it('should be able to not find a user because a wrong id', async () => {
     const user = makeUser({
       name: 'any_name',
       email: 'any_email@gmail.com',
@@ -34,7 +34,7 @@ describe('Fetch User By Email', () => {
 
     await inMemoryUserRepository.createUser(user)
 
-    const result = await sut.execute({ email: 'wrongemail@wrong.com' })
+    const result = await sut.execute({ id: 'wrong id' })
 
     expect(result.isLeft()).toBe(true)
     expect(result.value).toBeInstanceOf(UserNonExistsError)

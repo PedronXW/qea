@@ -7,7 +7,7 @@ const createUserZodSchema = z.object({
   name: z.string().min(2),
   email: z.string().email(),
   type: z.enum(['ORGANIZER', 'PARTICIPANT']),
-  password: z.string().min(6),
+  password: z.string().min(8),
 })
 
 export class CreateUserController {

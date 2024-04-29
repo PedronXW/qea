@@ -3,6 +3,7 @@ import {
   QuestionRepository,
 } from '@/domain/application/repositories/question-repository'
 import { Question } from '@/domain/enterprise/entities/question'
+import { Slug } from '@/domain/enterprise/entities/value-objects/slug'
 import { PrismaClient } from '@prisma/client'
 import { QuestionMapper } from '../mappers/question-mapper'
 
@@ -31,7 +32,9 @@ export class PrismaQuestionRepository implements QuestionRepository {
   ): Promise<Question[]> {
     const questions = await this.prisma.question.findMany({
       where: {
-        slug,
+        slug: {
+          contains: slug,
+        },
       },
       skip: page,
       take: limit,
@@ -86,10 +89,11 @@ export class PrismaQuestionRepository implements QuestionRepository {
     id: string,
     props: EditQuestionProps,
   ): Promise<Question> {
-    const data = {} as EditQuestionProps
+    const data = {} as EditQuestionProps & { slug?: string }
 
     if (props.title) {
       data.title = props.title
+      data.slug = Slug.create(props.title).value
     }
 
     if (props.content) {

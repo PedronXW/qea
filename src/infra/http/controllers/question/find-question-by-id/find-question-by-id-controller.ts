@@ -15,7 +15,7 @@ export class FindQuestionByIdController {
     const question = await this.findQuestionByIdService.execute(id)
 
     if (question.isLeft()) {
-      return res.status(404).send({ error: question.value })
+      return res.status(404).send({ error: question.value.message })
     }
 
     return res.status(200).json(QuestionPresenter.toHTTP(question.value!))

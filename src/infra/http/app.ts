@@ -1,13 +1,20 @@
+import bodyParser from 'body-parser'
 import cors from 'cors'
 import express from 'express'
 import 'express-async-errors'
+import swaggerUi from 'swagger-ui-express'
 import { ZodError } from 'zod'
+import swaggerFile from '../../../swagger-output.json'
 import { AppError } from './errors/AppError'
 import { router } from './routes'
 
 const app = express()
 
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerFile))
+
 app.use(cors())
+
+app.use(bodyParser.json())
 
 app.use(express.json())
 

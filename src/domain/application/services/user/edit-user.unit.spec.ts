@@ -20,10 +20,7 @@ describe('EditUser', () => {
 
     await inMemoryUserRepository.createUser(user)
 
-    const result = await sut.execute(user.id.getValue(), {
-      name: 'any_name2',
-      email: 'any_email2@gmail.com',
-    })
+    const result = await sut.execute(user.id.getValue(), 'any_name2')
 
     expect(result.isRight()).toBe(true)
     expect(inMemoryUserRepository.users[0].name).toEqual('any_name2')
@@ -37,10 +34,7 @@ describe('EditUser', () => {
 
     await inMemoryUserRepository.createUser(user)
 
-    const result = await sut.execute('wrong id', {
-      name: 'any_name2',
-      email: 'any_email2@gmail.com',
-    })
+    const result = await sut.execute('wrong id', 'any_name2')
 
     expect(result.isLeft()).toBe(true)
     expect(result.value).toBeInstanceOf(UserNonExistsError)

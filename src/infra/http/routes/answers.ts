@@ -1,7 +1,6 @@
 import { Router } from 'express'
 import { createAnswerController } from '../controllers/answer/create-answer'
 import { deleteAnswerController } from '../controllers/answer/delete-answer'
-import { findAnswerByAuthorIdInASpecificQuestionController } from '../controllers/answer/find-answer-by-author-id-in-a-specific-question'
 import { findAnswerByIdController } from '../controllers/answer/find-answer-by-id'
 import { findAnswersByQuestionIdController } from '../controllers/answer/find-answers-by-question-id'
 import { updateAnswerController } from '../controllers/answer/update-answer'
@@ -19,10 +18,6 @@ answersRouter.patch('/:id', verifyAuthentication, (req, res) => {
 
 answersRouter.get('/question/:id', verifyAuthentication, (req, res) => {
   return findAnswersByQuestionIdController.handle(req, res)
-})
-
-answersRouter.get('/', verifyAuthentication, (req, res) => {
-  return findAnswerByAuthorIdInASpecificQuestionController.handle(req, res)
 })
 
 answersRouter.get('/:id', verifyAuthentication, (req, res) => {

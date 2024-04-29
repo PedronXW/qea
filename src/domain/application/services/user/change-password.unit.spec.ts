@@ -1,6 +1,8 @@
+import { User } from '@/domain/enterprise/entities/user'
 import { Crypto } from '@/infra/cryptography/crypto'
 import { makeUser } from 'test/factories/user-factory'
 import { InMemoryUserRepository } from 'test/repositories/InMemoryUserRepository'
+import { UserNonExistsError } from '../../errors/UserNonExists'
 import { WrongCredentialError } from '../../errors/WrongCredentialsError'
 import { ChangePasswordService } from './change-password'
 
@@ -40,9 +42,10 @@ describe('ChangePassword', () => {
   })
 
   it('should be able to not change a user password with a credential error', async () => {
-    const user = makeUser({
+    const user = User.create({
       name: 'any_name',
       email: 'any_email@gmail.com',
+      type: 'PARTICIPANT',
       password: await crypto.hash('any_password'),
     })
 
@@ -56,5 +59,12 @@ describe('ChangePassword', () => {
 
     expect(result.isLeft()).toBe(true)
     expect(result.value).toBeInstanceOf(WrongCredentialError)
+  })
+
+  it('should be able to not change a user password with a user not exists error', async () => {
+    const result = await sut.execute('any_id', 'any_p', 'new_password')
+
+    expect(result.isLeft()).toBe(true)
+    expect(result.value).toBeInstanceOf(UserNonExistsError)
   })
 })
