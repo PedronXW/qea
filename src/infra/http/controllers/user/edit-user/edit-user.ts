@@ -4,8 +4,7 @@ import { Response } from 'express'
 import { z } from 'zod'
 
 const editUserZodBodySchema = z.object({
-  name: z.string().min(2).optional(),
-  email: z.string().email().optional(),
+  name: z.string().min(2),
 })
 
 export type EditUserBodySchema = z.infer<typeof editUserZodBodySchema>
@@ -20,12 +19,9 @@ export class EditUserController {
   async handle(req, res): Promise<Response> {
     const { id } = editUserZodParamsSchema.parse(req.user)
 
-    const { name, email } = editUserZodBodySchema.parse(req.body)
+    const { name } = editUserZodBodySchema.parse(req.body)
 
-    const editedUser = await this.editUserService.execute(id, {
-      name,
-      email,
-    })
+    const editedUser = await this.editUserService.execute(id, name)
 
     if (editedUser.isLeft()) {
       return res.status(400).send({ error: editedUser.value.message })

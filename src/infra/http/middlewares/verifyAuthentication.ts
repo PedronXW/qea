@@ -1,6 +1,5 @@
 import { verify } from 'jsonwebtoken'
 
-import { UserEmailNotVerifiedError } from '@/domain/application/errors/UserEmailNotVerifiedError'
 import { UserTypes } from '@/domain/enterprise/entities/user'
 import { env } from '@/infra/env'
 import { AppError } from '../errors/AppError'
@@ -32,10 +31,6 @@ export async function verifyAuthentication(request, response, next) {
 
     next()
   } catch (error) {
-    if (error instanceof UserEmailNotVerifiedError) {
-      throw new AppError('User e-mail not verified', 401)
-    } else {
-      throw new AppError('Invalid token', 401)
-    }
+    throw new AppError('Invalid token', 401)
   }
 }

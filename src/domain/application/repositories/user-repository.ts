@@ -1,9 +1,4 @@
-import { User } from '@/domain/enterprise/entities/user'
-
-export type EditUserType = {
-  name?: string
-  email?: string
-}
+import { User } from '@/domain/enterprise/entities/user';
 
 export abstract class UserRepository {
   abstract createUser(user: User): Promise<User>
@@ -12,7 +7,7 @@ export abstract class UserRepository {
 
   abstract deleteUser(id: string): Promise<boolean>
 
-  abstract editUser(id: string, user: EditUserType): Promise<User>
+  abstract editUser(id: string, name: string): Promise<User>
 
   abstract getUserByEmail(email: string): Promise<User | null>
 

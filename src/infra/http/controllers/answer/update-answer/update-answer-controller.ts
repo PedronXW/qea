@@ -7,7 +7,11 @@ const updateAnswerParamsSchema = z.object({
 })
 
 const updateAnswerBodySchema = z.object({
-  content: z.string(),
+  content: z.string().min(3),
+})
+
+const updateAnswerZodQuerySchema = z.object({
+  id: z.string().uuid(),
 })
 
 export class UpdateAnswerController {
@@ -18,13 +22,16 @@ export class UpdateAnswerController {
 
     const { content } = updateAnswerBodySchema.parse(req.body)
 
+    const { id: userId } = updateAnswerZodQuerySchema.parse(req.user)
+
     const answer = await this.updateAnswerUseCase.execute({
       id,
       content,
+      userId,
     })
 
     if (answer.isLeft()) {
-      return res.status(404).json(answer.value)
+      return res.status(404).json({ error: answer.value.message })
     }
 
     return res.status(200).json(AnswerPresenter.toHTTP(answer.value))

@@ -1,7 +1,4 @@
-import {
-  EditUserType,
-  UserRepository,
-} from '@/domain/application/repositories/user-repository'
+import { UserRepository } from '@/domain/application/repositories/user-repository'
 import { User } from '@/domain/enterprise/entities/user'
 import { PrismaClient } from '@prisma/client'
 import { UserMapper } from '../mappers/user-mapper'
@@ -46,28 +43,21 @@ export class PrismaUserRepository implements UserRepository {
   }
 
   async deleteUser(id: string): Promise<boolean> {
-    await this.prisma.user.delete({
+    await this.prisma.user.update({
       where: { id },
+      data: {
+        active: false,
+      },
     })
 
     return true
   }
 
-  async editUser(id: string, user: EditUserType): Promise<User> {
-    const data = {} as EditUserType
-
-    if (user.name) {
-      data.name = user.name
-    }
-
-    if (user.email) {
-      data.email = user.email
-    }
-
+  async editUser(id: string, name: string): Promise<User> {
     const editedUser = await this.prisma.user.update({
       where: { id },
       data: {
-        ...data,
+        name,
         updatedAt: new Date(),
       },
       select: {

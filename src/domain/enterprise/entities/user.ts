@@ -9,6 +9,7 @@ type UserProps = {
   name: string
   email: string
   type: UserTypes
+  active: boolean
   password?: string
   createdAt: Date | null
   updatedAt?: Date | null
@@ -47,6 +48,14 @@ export class User extends Entity<UserProps> {
     this.props.type = type
   }
 
+  get active(): boolean {
+    return this.props.active
+  }
+
+  set active(active: boolean) {
+    this.props.active = active
+  }
+
   get createdAt(): Date | null {
     return this.props.createdAt
   }
@@ -63,10 +72,14 @@ export class User extends Entity<UserProps> {
     this.props.updatedAt = updatedAt
   }
 
-  static create(props: Optional<UserProps, 'createdAt'>, id?: EntityId): User {
+  static create(
+    props: Optional<UserProps, 'createdAt' | 'active'>,
+    id?: EntityId,
+  ): User {
     const user = new User(
       {
         ...props,
+        active: props.active ?? true,
         createdAt: props.createdAt ?? new Date(),
         updatedAt: props.updatedAt ?? null,
       },

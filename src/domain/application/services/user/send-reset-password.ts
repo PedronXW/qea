@@ -1,7 +1,6 @@
 import { Either, left, right } from '@/@shared/either'
 import { env } from '@/infra/env'
 import { Encrypter } from '../../criptography/encrypter'
-import { UserEmailAlreadyVerifiedError } from '../../errors/UserEmailAlreadyVerifiedError'
 import { UserNonExistsError } from '../../errors/UserNonExists'
 import { UserRepository } from '../../repositories/user-repository'
 
@@ -9,10 +8,7 @@ interface SendResetPasswordServiceRequest {
   email: string
 }
 
-type SendResetPasswordServiceResponse = Either<
-  UserNonExistsError | UserEmailAlreadyVerifiedError,
-  string
->
+type SendResetPasswordServiceResponse = Either<UserNonExistsError, string>
 
 export class SendResetPasswordService {
   constructor(

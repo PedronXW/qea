@@ -1,6 +1,8 @@
 import { EntityId } from '@/@shared/entities/entity-id'
 import { Question } from '@/domain/enterprise/entities/question'
 import { InMemoryQuestionRepository } from 'test/repositories/InMemoryQuestionRepository'
+import { PermissionError } from '../../errors/PermissionError'
+import { QuestionNonExistsError } from '../../errors/QuestionNonExistsError'
 import { UpdateQuestionService } from './update-question'
 
 let sut: UpdateQuestionService
@@ -26,6 +28,7 @@ describe('Update Question', () => {
       questionId: question.id.getValue(),
       content: 'New question content',
       title: 'New question title',
+      userId: 'author-id',
     })
 
     expect(response.isRight()).toBeTruthy()
@@ -54,8 +57,31 @@ describe('Update Question', () => {
       questionId: 'non-existing-id',
       content: 'New question content',
       title: 'New question title',
+      userId: 'author-id',
     })
 
     expect(response.isLeft()).toBeTruthy()
+    expect(response.value).toBeInstanceOf(QuestionNonExistsError)
+  })
+
+  it('should not be able to update a question that is not from the user', async () => {
+    const newQuestion = Question.create({
+      authorId: new EntityId('author-id'),
+      content: 'Question content',
+      title: 'Question title',
+    })
+
+    const question =
+      await inMemoryQuestionRepository.createQuestion(newQuestion)
+
+    const response = await sut.execute({
+      questionId: question.id.getValue(),
+      content: 'New question content',
+      title: 'New question title',
+      userId: 'another-author-id',
+    })
+
+    expect(response.isLeft()).toBeTruthy()
+    expect(response.value).toBeInstanceOf(PermissionError)
   })
 })

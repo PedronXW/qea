@@ -8,6 +8,7 @@ export class UserMapper {
         name: raw.name,
         email: raw.email,
         type: raw.type,
+        active: raw.active,
         password: raw.password,
         createdAt: new Date(raw.createdAt),
         updatedAt: raw.updatedAt ? new Date(raw.updatedAt) : null,

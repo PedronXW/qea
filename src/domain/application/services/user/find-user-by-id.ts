@@ -3,18 +3,18 @@ import { User } from '@/domain/enterprise/entities/user'
 import { UserNonExistsError } from '../../errors/UserNonExists'
 import { UserRepository } from '../../repositories/user-repository'
 
-type FetchUserByIdServiceRequest = {
+type FindUserByIdServiceRequest = {
   id: string
 }
 
-type FetchUserByIdServiceResponse = Either<UserNonExistsError, User>
+type FindUserByIdServiceResponse = Either<UserNonExistsError, User>
 
-export class FetchUserByIdService {
+export class FindUserByIdService {
   constructor(private userRepository: UserRepository) {}
 
   async execute({
     id,
-  }: FetchUserByIdServiceRequest): Promise<FetchUserByIdServiceResponse> {
+  }: FindUserByIdServiceRequest): Promise<FindUserByIdServiceResponse> {
     const user = await this.userRepository.getUserById(id)
 
     if (!user) {

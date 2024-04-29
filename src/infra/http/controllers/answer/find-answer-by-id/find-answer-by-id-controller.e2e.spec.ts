@@ -23,9 +23,23 @@ describe('FindAnswerByIdController', () => {
         content: 'Question content',
       })
 
+    await request(app).post('/users').send({
+      name: 'John Doe',
+      email: 'johndoe2@johndoe.com',
+      type: 'ORGANIZER',
+      password: '12345678',
+    })
+
+    const authenticationSecondAccount = await request(app)
+      .post('/sessions')
+      .send({
+        email: 'johndoe2@johndoe.com',
+        password: '12345678',
+      })
+
     const response = await request(app)
       .post('/answers')
-      .set('Authorization', `Bearer ${authentication.body.token}`)
+      .set('Authorization', `Bearer ${authenticationSecondAccount.body.token}`)
       .send({
         questionId: question.body.id,
         content: 'Answer content',

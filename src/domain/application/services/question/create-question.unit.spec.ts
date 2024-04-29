@@ -1,4 +1,5 @@
 import { InMemoryQuestionRepository } from 'test/repositories/InMemoryQuestionRepository'
+import { PermissionError } from '../../errors/PermissionError'
 import { CreateQuestionService } from './create-question'
 
 let sut: CreateQuestionService
@@ -23,5 +24,17 @@ describe('Create Question', () => {
     expect(response.value).toHaveProperty('title', 'Question title')
     expect(response.value).toHaveProperty('content', 'Question content')
     expect(response.value).toHaveProperty('authorId', { value: 'author-id' })
+  })
+
+  it('should be able to return a permission error', async () => {
+    const response = await sut.execute({
+      authorId: 'author-id',
+      content: 'Question content',
+      authorType: 'PARTICIPANT',
+      title: 'Question title',
+    })
+
+    expect(response.isLeft()).toBeTruthy()
+    expect(response.value).toBeInstanceOf(PermissionError)
   })
 })

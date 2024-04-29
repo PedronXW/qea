@@ -45,7 +45,7 @@ describe('Create User', () => {
 
     expect(response.status).toBe(400)
     expect(response.body).toEqual({
-      error: ['password - String must contain at least 6 character(s)'],
+      error: ['password - String must contain at least 8 character(s)'],
     })
   })
 

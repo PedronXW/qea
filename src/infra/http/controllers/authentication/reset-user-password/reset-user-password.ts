@@ -3,7 +3,7 @@ import { z } from 'zod'
 
 const resetUserPasswordZodSchema = z.object({
   id: z.string(),
-  newPassword: z.string(),
+  password: z.string(),
 })
 
 export class ResetUserPasswordController {
@@ -12,17 +12,17 @@ export class ResetUserPasswordController {
   ) {}
 
   async handle(req, res): Promise<Response> {
-    const { id, newPassword } = resetUserPasswordZodSchema.parse(req.body)
+    const { id, password } = resetUserPasswordZodSchema.parse(req.body)
 
     const code = await this.resetUserPasswordService.execute({
       id,
-      password: newPassword,
+      password,
     })
 
     if (code.isLeft()) {
       return res.status(400).send({ error: code.value.message })
     }
 
-    return res.status(200).send()
+    return res.status(204).send()
   }
 }
