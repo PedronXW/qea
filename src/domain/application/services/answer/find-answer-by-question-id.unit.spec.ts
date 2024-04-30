@@ -1,5 +1,6 @@
 import { EntityId } from '@/@shared/entities/entity-id'
 import { Answer } from '@/domain/enterprise/entities/answer'
+import { Question } from '@/domain/enterprise/entities/question'
 import { InMemoryAnswerRepository } from 'test/repositories/InMemoryAnswerRepository'
 import { InMemoryQuestionRepository } from 'test/repositories/InMemoryQuestionRepository'
 import { PermissionError } from '../../errors/PermissionError'
@@ -21,16 +22,24 @@ describe('Find Answer By Question Id', () => {
   })
 
   it('should be able to find an answer by question id', async () => {
+    const question = Question.create({
+      title: 'any_title',
+      content: 'any_content',
+      authorId: new EntityId('any_author_id'),
+    })
+
+    await inMemoryQuestionRepository.createQuestion(question)
+
     const newAnswer = Answer.create({
       authorId: new EntityId('any_author_id'),
       content: 'any_content',
-      questionId: new EntityId('any_question_id'),
+      questionId: question.id,
     })
 
     inMemoryAnswerRepository.answers.push(newAnswer)
 
     const result = await sut.execute({
-      questionId: newAnswer.questionId.getValue(),
+      questionId: question.id.getValue(),
       authorType: 'ORGANIZER',
       page: 1,
       limit: 10,
@@ -41,16 +50,24 @@ describe('Find Answer By Question Id', () => {
   })
 
   it('should be able to return a permission error', async () => {
+    const question = Question.create({
+      title: 'any_title',
+      content: 'any_content',
+      authorId: new EntityId('any_author_id'),
+    })
+
+    await inMemoryQuestionRepository.createQuestion(question)
+
     const newAnswer = Answer.create({
       authorId: new EntityId('any_author_id'),
       content: 'any_content',
-      questionId: new EntityId('any_question_id'),
+      questionId: question.id,
     })
 
     inMemoryAnswerRepository.answers.push(newAnswer)
 
     const result = await sut.execute({
-      questionId: newAnswer.questionId.getValue(),
+      questionId: question.id.getValue(),
       authorType: 'PARTICIPANT',
       page: 1,
       limit: 10,
@@ -71,7 +88,7 @@ describe('Find Answer By Question Id', () => {
 
     const result = await sut.execute({
       questionId: 'any_id',
-      authorType: 'PARTICIPANT',
+      authorType: 'ORGANIZER',
       page: 1,
       limit: 10,
     })
