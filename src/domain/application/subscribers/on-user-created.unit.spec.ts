@@ -1,5 +1,5 @@
+import { User } from '@/domain/enterprise/entities/user'
 import { RabbitMQModule } from '@/infra/rabbitmq/rabbitmqModule'
-import { makeUser } from 'test/factories/user-factory'
 import { InMemoryUserRepository } from 'test/repositories/InMemoryUserRepository'
 import { OnUserCreated } from './on-user-created'
 
@@ -13,7 +13,11 @@ describe('On Answer Created', () => {
   it('should  send a notification when an answer is created', async () => {
     new OnUserCreated(new RabbitMQModule())
 
-    const user = makeUser()
+    const user = User.create({
+      name: 'any_name',
+      type: 'ORGANIZER',
+      email: 'anyemail@email.com',
+    })
 
     inMemoryUserRepository.createUser(user)
   })

@@ -1,6 +1,6 @@
+import { User } from '@/domain/enterprise/entities/user'
 import { Crypto } from '@/infra/cryptography/crypto'
 import { Encrypter } from '@/infra/cryptography/encrypter'
-import { makeUser } from 'test/factories/user-factory'
 import { InMemoryUserRepository } from 'test/repositories/InMemoryUserRepository'
 import { WrongCredentialError } from '../../errors/WrongCredentialsError'
 import { AuthenticateUserService } from './authenticate-user'
@@ -19,8 +19,9 @@ describe('AuthenticateUser', () => {
   })
 
   it('should be able to authenticate a user', async () => {
-    const user = makeUser({
+    const user = User.create({
       name: 'any_name',
+      type: 'ORGANIZER',
       email: 'any_email@gmail.com',
       password: await crypto.hash('any_password'),
     })
@@ -38,8 +39,9 @@ describe('AuthenticateUser', () => {
   })
 
   it('should be able to return a wrong credential error caused by a wrong password', async () => {
-    const user = makeUser({
+    const user = User.create({
       name: 'any_name',
+      type: 'ORGANIZER',
       email: 'any_email@gmail.com',
       password: await crypto.hash('any_password'),
     })
@@ -56,8 +58,9 @@ describe('AuthenticateUser', () => {
   })
 
   it('should be able to return a wrong credential error caused by a wrong email', async () => {
-    const user = makeUser({
+    const user = User.create({
       name: 'any_name',
+      type: 'ORGANIZER',
       email: 'any_email@gmail.com',
       password: await crypto.hash('any_password'),
     })

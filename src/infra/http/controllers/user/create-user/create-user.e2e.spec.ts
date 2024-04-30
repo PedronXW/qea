@@ -21,6 +21,27 @@ describe('Create User', () => {
     })
   })
 
+  it('should not be able to create a user because a user already exists', async () => {
+    await request(app).post('/users').send({
+      name: 'John Doe',
+      email: 'johndoe@johndoe.com',
+      type: 'ORGANIZER',
+      password: '12345678',
+    })
+
+    const response = await request(app).post('/users').send({
+      name: 'John Doe',
+      email: 'johndoe@johndoe.com',
+      type: 'ORGANIZER',
+      password: '12345678',
+    })
+
+    expect(response.status).toBe(400)
+    expect(response.body).toEqual({
+      error: 'User already exists',
+    })
+  })
+
   it('should not be able to create a user because a invalid name', async () => {
     const response = await request(app).post('/users').send({
       name: 'J',
@@ -60,6 +81,22 @@ describe('Create User', () => {
     expect(response.status).toBe(400)
     expect(response.body).toEqual({
       error: ['email - Invalid email'],
+    })
+  })
+
+  it('should not be able to create a user because a invalid type', async () => {
+    const response = await request(app).post('/users').send({
+      name: 'John Doe',
+      email: 'johndoe@any.com',
+      type: 'ANYTHING',
+      password: '12345678',
+    })
+
+    expect(response.status).toBe(400)
+    expect(response.body).toEqual({
+      error: [
+        "type - Invalid enum value. Expected 'ORGANIZER' | 'PARTICIPANT', received 'ANYTHING'",
+      ],
     })
   })
 })
