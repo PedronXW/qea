@@ -2,7 +2,9 @@ import { Either, left, right } from '@/@shared/either'
 import { Answer } from '@/domain/enterprise/entities/answer'
 import { UserTypes } from '@/domain/enterprise/entities/user'
 import { PermissionError } from '../../errors/PermissionError'
+import { QuestionNonExistsError } from '../../errors/QuestionNonExistsError'
 import { AnswerRepository } from '../../repositories/answer-repository'
+import { QuestionRepository } from '../../repositories/question-repository'
 
 type FindAnswersByQuestionIdServiceRequest = {
   questionId: string
@@ -11,10 +13,17 @@ type FindAnswersByQuestionIdServiceRequest = {
   limit: number
 }
 
-type FindAnswersByQuestionIdServiceResponse = Either<PermissionError, Answer[]>
+type FindAnswersByQuestionIdServiceResponse = Either<
+  PermissionError | QuestionNonExistsError,
+  Answer[]
+>
 
 export class FindAnswersByQuestionIdService {
-  constructor(private answerRepository: AnswerRepository) {}
+  constructor(
+    private answerRepository: AnswerRepository,
+    private questionRepository: QuestionRepository,
+  ) {}
+
   async execute({
     questionId,
     page,
@@ -23,6 +32,12 @@ export class FindAnswersByQuestionIdService {
   }: FindAnswersByQuestionIdServiceRequest): Promise<FindAnswersByQuestionIdServiceResponse> {
     if (authorType !== 'ORGANIZER') {
       return left(new PermissionError())
+    }
+
+    const question = await this.questionRepository.findQuestionById(questionId)
+
+    if (!question) {
+      return left(new QuestionNonExistsError())
     }
 
     const answers = await this.answerRepository.findAnswersByQuestionId(

@@ -1,7 +1,7 @@
+import { User } from '@/domain/enterprise/entities/user'
 import { Crypto } from '@/infra/cryptography/crypto'
 import { Encrypter } from '@/infra/cryptography/encrypter'
 import { env } from '@/infra/env'
-import { makeUser } from 'test/factories/user-factory'
 import { InMemoryUserRepository } from 'test/repositories/InMemoryUserRepository'
 import { UserNonExistsError } from '../../errors/UserNonExists'
 import { SendResetPasswordService } from './send-reset-password'
@@ -19,8 +19,9 @@ describe('SendResetPassword', () => {
   })
 
   it('should be able to send a reset password email', async () => {
-    const user = makeUser({
+    const user = User.create({
       name: 'any_name',
+      type: 'ORGANIZER',
       email: 'any_email@gmail.com',
       password: await crypto.hash('any_password'),
     })
@@ -41,8 +42,9 @@ describe('SendResetPassword', () => {
   })
 
   it('should not be able to send a reset password email because a invalid email', async () => {
-    const user = makeUser({
+    const user = User.create({
       name: 'any_name',
+      type: 'ORGANIZER',
       email: 'any_email@gmail.com',
       password: await crypto.hash('any_password'),
     })

@@ -1,6 +1,5 @@
 import { User } from '@/domain/enterprise/entities/user'
 import { Crypto } from '@/infra/cryptography/crypto'
-import { makeUser } from 'test/factories/user-factory'
 import { InMemoryUserRepository } from 'test/repositories/InMemoryUserRepository'
 import { UserNonExistsError } from '../../errors/UserNonExists'
 import { WrongCredentialError } from '../../errors/WrongCredentialsError'
@@ -18,8 +17,9 @@ describe('ChangePassword', () => {
   })
 
   it('should be able to change a user password', async () => {
-    const user = makeUser({
+    const user = User.create({
       name: 'any_name',
+      type: 'ORGANIZER',
       email: 'any_email@gmail.com',
       password: await crypto.hash('any_password'),
     })

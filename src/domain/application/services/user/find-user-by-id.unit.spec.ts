@@ -1,4 +1,4 @@
-import { makeUser } from 'test/factories/user-factory'
+import { User } from '@/domain/enterprise/entities/user'
 import { InMemoryUserRepository } from 'test/repositories/InMemoryUserRepository'
 import { UserNonExistsError } from '../../errors/UserNonExists'
 import { FindUserByIdService } from './find-user-by-id'
@@ -13,8 +13,9 @@ describe('Find User By ID', () => {
   })
 
   it('should be able to find a user by id', async () => {
-    const user = makeUser({
+    const user = User.create({
       name: 'any_name',
+      type: 'ORGANIZER',
       email: 'any_email@gmail.com',
     })
 
@@ -27,8 +28,9 @@ describe('Find User By ID', () => {
   })
 
   it('should be able to not find a user because a wrong id', async () => {
-    const user = makeUser({
+    const user = User.create({
       name: 'any_name',
+      type: 'ORGANIZER',
       email: 'any_email@gmail.com',
     })
 

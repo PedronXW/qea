@@ -4,7 +4,7 @@ import express from 'express'
 import 'express-async-errors'
 import swaggerUi from 'swagger-ui-express'
 import { ZodError } from 'zod'
-import swaggerFile from '../../../swagger-output.json'
+import swaggerFile from '../../../documentation/swagger.json'
 import { AppError } from './errors/AppError'
 import { router } from './routes'
 

@@ -54,4 +54,32 @@ describe('Change Password', () => {
       error: ['password - String must contain at least 8 character(s)'],
     })
   })
+
+  it('should not be able to change a user password because a wrong password', async () => {
+    await request(app).post('/users').send({
+      name: 'John Doe',
+      email: 'johndoe@johndoe.com',
+      type: 'ORGANIZER',
+      password: '12345678',
+    })
+
+    const authentication = await request(app).post('/sessions').send({
+      email: 'johndoe@johndoe.com',
+      password: '12345678',
+    })
+
+    const responseUpdate = await request(app)
+      .put(`/users/password`)
+      .set('Content-Type', 'application/json')
+      .set('Authorization', `Bearer ${authentication.body.token}`)
+      .send({
+        password: 'wrongpassword',
+        newPassword: '123456789',
+      })
+
+    expect(responseUpdate.status).toBe(400)
+    expect(responseUpdate.body).toEqual({
+      error: 'Wrong credentials',
+    })
+  })
 })
