@@ -31,7 +31,10 @@ export class CreateAnswerService {
     content,
     questionId,
   }: CreateAnswerServiceRequest): Promise<CreateAnswerServiceResponse> {
-    const question = await this.questionRepository.findQuestionById(questionId)
+    const question = await this.questionRepository.findQuestionById(
+      questionId,
+      authorId,
+    )
 
     if (!question) {
       return left(new QuestionNonExistsError())

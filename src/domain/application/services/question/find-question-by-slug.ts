@@ -6,6 +6,7 @@ type FindQuestionBySlugServiceResponse = Either<null, Question[]>
 
 type FindQuestionBySlugServiceRequest = {
   slug: string
+  authorId: string
   page: number
   limit: number
 }
@@ -15,11 +16,13 @@ export class FindQuestionBySlugService {
 
   async execute({
     limit,
+    authorId,
     page,
     slug,
   }: FindQuestionBySlugServiceRequest): Promise<FindQuestionBySlugServiceResponse> {
     const questions = await this.questionRepository.findQuestionBySlug(
       slug,
+      authorId,
       page,
       limit,
     )

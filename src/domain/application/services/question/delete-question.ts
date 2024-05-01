@@ -12,7 +12,10 @@ export class DeleteQuestionService {
     questionId: string,
     userId: string,
   ): Promise<DeleteQuestionServiceResponse> {
-    const question = await this.questionRepository.findQuestionById(questionId)
+    const question = await this.questionRepository.findQuestionById(
+      questionId,
+      userId,
+    )
     if (!question) {
       return left(new QuestionNonExistsError())
     }

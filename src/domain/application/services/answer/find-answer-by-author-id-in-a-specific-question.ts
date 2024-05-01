@@ -20,7 +20,10 @@ export class FindAnswerByAuthorIdInASpecificQuestionService {
     authorId: string,
     questionId: string,
   ): Promise<FindAnswerByAuthorIdInASpecificQuestionServiceResponse> {
-    const question = await this.questionRepository.findQuestionById(questionId)
+    const question = await this.questionRepository.findQuestionById(
+      questionId,
+      authorId,
+    )
 
     if (!question) {
       return left(new QuestionNonExistsError())

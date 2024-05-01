@@ -14,6 +14,7 @@ export class InMemoryQuestionRepository implements QuestionRepository {
 
   async findQuestionBySlug(
     slug: string,
+    authorId: string,
     page: number,
     limit: number,
   ): Promise<Question[]> {
@@ -26,7 +27,10 @@ export class InMemoryQuestionRepository implements QuestionRepository {
       .slice(startIndex, endIndex)
   }
 
-  async findQuestionById(id: string): Promise<Question | null> {
+  async findQuestionById(
+    id: string,
+    authorId: string,
+  ): Promise<Question | null> {
     return (
       this.questions.find((question) => question.id.getValue() === id) || null
     )

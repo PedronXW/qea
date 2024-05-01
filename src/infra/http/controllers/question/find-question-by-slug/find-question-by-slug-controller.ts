@@ -11,6 +11,10 @@ const findAllQuestionsZodQuerySchema = z.object({
   limit: z.string().transform(Number),
 })
 
+const findAllQuestionsZodPassSchema = z.object({
+  id: z.string().uuid(),
+})
+
 export class FindQuestionBySlugController {
   constructor(private findQuestionBySlugService: FindQuestionBySlugService) {}
 
@@ -19,8 +23,11 @@ export class FindQuestionBySlugController {
 
     const { page, limit } = findAllQuestionsZodQuerySchema.parse(req.query)
 
+    const { id } = findAllQuestionsZodPassSchema.parse(req.user)
+
     const question = await this.findQuestionBySlugService.execute({
       slug,
+      authorId: id,
       page,
       limit,
     })

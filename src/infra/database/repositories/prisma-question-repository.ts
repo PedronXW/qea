@@ -27,6 +27,7 @@ export class PrismaQuestionRepository implements QuestionRepository {
 
   async findQuestionBySlug(
     slug: string,
+    authorId: string,
     page: number,
     limit: number,
   ): Promise<Question[]> {
@@ -36,6 +37,13 @@ export class PrismaQuestionRepository implements QuestionRepository {
           contains: slug,
         },
       },
+      include: {
+        answers: {
+          where: {
+            authorId,
+          },
+        },
+      },
       skip: page,
       take: limit,
     })
@@ -43,10 +51,20 @@ export class PrismaQuestionRepository implements QuestionRepository {
     return questions.map(QuestionMapper.toDomain)
   }
 
-  async findQuestionById(id: string): Promise<Question | null> {
+  async findQuestionById(
+    id: string,
+    authorId: string,
+  ): Promise<Question | null> {
     const question = await this.prisma.question.findUnique({
       where: {
         id,
+      },
+      include: {
+        answers: {
+          where: {
+            authorId,
+          },
+        },
       },
     })
 

@@ -25,7 +25,10 @@ export class UpdateQuestionService {
     title,
     content,
   }: UpdateQuestionServiceRequest): Promise<UpdateQuestionServiceResponse> {
-    const question = await this.questionRepository.findQuestionById(questionId)
+    const question = await this.questionRepository.findQuestionById(
+      questionId,
+      userId,
+    )
 
     if (!question) {
       return left(new QuestionNonExistsError())
