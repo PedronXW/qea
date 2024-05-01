@@ -1,24 +1,15 @@
 import { app } from '@/infra/http/app'
 import request from 'supertest'
+import { createAuthenticatedUserOrganizer } from 'test/factories/e2e/authenticated-user'
 
 describe('Edit User', () => {
   it('should be able to edit a user', async () => {
-    await request(app).post('/users').send({
-      name: 'John Doe',
-      email: 'johndoe@johndoe.com',
-      type: 'ORGANIZER',
-      password: '12345678',
-    })
-
-    const authentication = await request(app).post('/sessions').send({
-      email: 'johndoe@johndoe.com',
-      password: '12345678',
-    })
+    const user = await createAuthenticatedUserOrganizer()
 
     const responseUpdate = await request(app)
       .put(`/users`)
       .set('Content-Type', 'application/json')
-      .set('Authorization', `Bearer ${authentication.body.token}`)
+      .set('Authorization', `Bearer ${user.authentication.body.token}`)
       .send({
         name: 'John Doe2',
       })
@@ -27,22 +18,12 @@ describe('Edit User', () => {
   })
 
   it('should not be able to edit a user because a invalid name', async () => {
-    await request(app).post('/users').send({
-      name: 'John Doe',
-      email: 'johndoe@johndoe.com',
-      type: 'ORGANIZER',
-      password: '12345678',
-    })
-
-    const authentication = await request(app).post('/sessions').send({
-      email: 'johndoe@johndoe.com',
-      password: '12345678',
-    })
+    const user = await createAuthenticatedUserOrganizer()
 
     const responseUpdate = await request(app)
       .put(`/users`)
       .set('Content-Type', 'application/json')
-      .set('Authorization', `Bearer ${authentication.body.token}`)
+      .set('Authorization', `Bearer ${user.authentication.body.token}`)
       .send({
         name: 'J',
       })

@@ -2,7 +2,7 @@ import { CreateQuestionService } from '@/domain/application/services/question/cr
 import { QuestionPresenter } from '@/infra/http/presenters/presenter-question'
 import { z } from 'zod'
 
-const createQuestionZodSchema = z.object({
+const createQuestionDTO = z.object({
   title: z.string().min(1),
   content: z.string().min(1),
 })
@@ -19,7 +19,7 @@ export class CreateQuestionController {
   constructor(private createQuestionService: CreateQuestionService) {}
 
   async handle(req, res): Promise<Response> {
-    const { title, content } = createQuestionZodSchema.parse(req.body)
+    const { title, content } = createQuestionDTO.parse(req.body)
     const { id } = createQuestionZodAuthSchema.parse(req.user)
     const { type } = createQuestionZodPermissionSchema.parse(req.permission)
 

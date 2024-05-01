@@ -1,27 +1,13 @@
 import { app } from '@/infra/http/app'
 import request from 'supertest'
+import { createAuthenticatedUserOrganizer } from 'test/factories/e2e/authenticated-user'
+import { createQuestionFactory } from 'test/factories/e2e/question'
 
 describe('DeleteQuestionController', () => {
   it('should be able to delete a question', async () => {
-    await request(app).post('/users').send({
-      name: 'John Doe',
-      email: 'johndoe@johndoe.com',
-      type: 'ORGANIZER',
-      password: '12345678',
-    })
+    const { authentication } = await createAuthenticatedUserOrganizer()
 
-    const authentication = await request(app).post('/sessions').send({
-      email: 'johndoe@johndoe.com',
-      password: '12345678',
-    })
-
-    const question = await request(app)
-      .post('/questions')
-      .set('Authorization', `Bearer ${authentication.body.token}`)
-      .send({
-        title: 'Question title',
-        content: 'Question content',
-      })
+    const { question } = await createQuestionFactory(authentication.body.token)
 
     const response = await request(app)
       .delete(`/questions/${question.body.id}`)
@@ -32,17 +18,7 @@ describe('DeleteQuestionController', () => {
   })
 
   it('should not be able to delete a question with an invalid id', async () => {
-    await request(app).post('/users').send({
-      name: 'John Doe',
-      email: 'johndoe@johndoe.com',
-      type: 'ORGANIZER',
-      password: '12345678',
-    })
-
-    const authentication = await request(app).post('/sessions').send({
-      email: 'johndoe@johndoe.com',
-      password: '12345678',
-    })
+    const { authentication } = await createAuthenticatedUserOrganizer()
 
     const response = await request(app)
       .delete(`/questions/invalid-id`)

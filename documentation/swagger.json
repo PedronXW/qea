@@ -285,7 +285,6 @@
       }
     },
 
-
     "/users/password": {
       "put": {
         "tags": ["Users"],
@@ -528,9 +527,6 @@
       }
     },
 
-
-
-
     "/questions/": {
       "post": {
         "tags": ["Questions"],
@@ -628,9 +624,19 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Question"
+                  "type": "object",
+                  "properties":{
+                    "questions": {
+                      "type": "array",
+                      "items":{
+                        "$ref": "#/components/schemas/Question"
+                      }
+                    },
+                    "questionsCount":{
+                      "type": "number",
+                      "description": "Number of questions found by slug.",
+                      "example": 1
+                    }
                   }
                 }
               }
@@ -688,9 +694,19 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Question"
+                  "type": "object",
+                  "properties":{
+                    "questions": {
+                      "type": "array",
+                      "items":{
+                        "$ref": "#/components/schemas/Question"
+                      }
+                    },
+                    "questionsCount":{
+                      "type": "number",
+                      "description": "Number of questions found by slug.",
+                      "example": 1
+                    }
                   }
                 }
               }
@@ -858,9 +874,6 @@
         }
       }
     },
-
-
-
 
     "/answers/": {
       "post": {
@@ -1123,9 +1136,19 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Answer"
+                  "type": "object",
+                  "properties":{
+                    "answers": {
+                      "type": "array",
+                      "items":{
+                        "$ref": "#/components/schemas/Answer"
+                      }
+                    },
+                    "answersCount":{
+                      "type": "number",
+                      "description": "Number of answers found by slug.",
+                      "example": 1
+                    }
                   }
                 }
               }
