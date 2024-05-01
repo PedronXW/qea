@@ -16,6 +16,11 @@ Toda a aplicação é desenvolvida em containers, e esses são administrados com
 - Com os dois passos anteriores cumpridos, poderemos utilizar nossa aplicação. Se quisermos rodar os testes, podemos utilizar o comando "npm run test-e2e" ou "npm run test-unit", dependendo do tipo de testes que você quer executar.
 - Se quiser iniciar a aplicação em produção execute os comandos "npm run build" e em seguida o comando "npm run start".
 - Se quiser iniciar a aplicação em desenvolvimento execute o comando "npm run start:dev".
+- A aplicação é executada na porta 3333, o PostgreSQL na porta 5432 e o Redis na porta 6379, então tome cuidado para não possuir outras ferramentas em execução nestas portas.
+
+## Documentação de Endpoints
+
+A documentação de endpoints foi feita utilizando a ferramente Swagger e pode ser encontrada ao iniciar a aplicação com o link: http://localhost:3333/docs
 
 ## Testes
 
