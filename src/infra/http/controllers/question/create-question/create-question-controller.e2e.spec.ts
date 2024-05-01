@@ -1,19 +1,13 @@
 import { app } from '@/infra/http/app'
 import request from 'supertest'
+import {
+  createAuthenticatedUserOrganizer,
+  createAuthenticatedUserParticipant,
+} from 'test/factories/e2e/authenticated-user'
 
 describe('CreateQuestionController', () => {
   it('should be able to create a new question', async () => {
-    await request(app).post('/users').send({
-      name: 'John Doe',
-      email: 'johndoe@johndoe.com',
-      type: 'ORGANIZER',
-      password: '12345678',
-    })
-
-    const authentication = await request(app).post('/sessions').send({
-      email: 'johndoe@johndoe.com',
-      password: '12345678',
-    })
+    const { authentication } = await createAuthenticatedUserOrganizer()
 
     const question = await request(app)
       .post('/questions')
@@ -36,17 +30,7 @@ describe('CreateQuestionController', () => {
   })
 
   it('should not be able to create a new question because a permission error', async () => {
-    await request(app).post('/users').send({
-      name: 'John Doe',
-      email: 'johndoe@johndoe.com',
-      type: 'PARTICIPANT',
-      password: '12345678',
-    })
-
-    const authentication = await request(app).post('/sessions').send({
-      email: 'johndoe@johndoe.com',
-      password: '12345678',
-    })
+    const { authentication } = await createAuthenticatedUserParticipant()
 
     const question = await request(app)
       .post('/questions')

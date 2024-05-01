@@ -1,16 +1,18 @@
 import { AuthenticateUserService } from '@/domain/application/services/user/authenticate-user'
 import { z } from 'zod'
 
-const authenticateUserZodSchema = z.object({
+export const AuthenticateUserDTO = z.object({
   email: z.string().email(),
   password: z.string().min(8),
 })
+
+export type AuthenticateUserDTO = z.infer<typeof AuthenticateUserDTO>
 
 export class AuthenticateUserController {
   constructor(private authenticateUserService: AuthenticateUserService) {}
 
   async handle(req, res): Promise<Response> {
-    const { email, password } = authenticateUserZodSchema.parse(req.body)
+    const { email, password } = AuthenticateUserDTO.parse(req.body)
 
     const token = await this.authenticateUserService.execute({
       email,
