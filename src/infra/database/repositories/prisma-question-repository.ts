@@ -1,5 +1,6 @@
 import {
   EditQuestionProps,
+  FindQuestionsResponse,
   QuestionRepository,
 } from '@/domain/application/repositories/question-repository'
 import { Question } from '@/domain/enterprise/entities/question'
@@ -30,7 +31,7 @@ export class PrismaQuestionRepository implements QuestionRepository {
     authorId: string,
     page: number,
     limit: number,
-  ): Promise<Question[]> {
+  ): Promise<FindQuestionsResponse> {
     const questions = await this.prisma.question.findMany({
       where: {
         slug: {
@@ -48,7 +49,15 @@ export class PrismaQuestionRepository implements QuestionRepository {
       take: limit,
     })
 
-    return questions.map(QuestionMapper.toDomain)
+    const questionsCount = await this.prisma.question.count({
+      where: {
+        slug: {
+          contains: slug,
+        },
+      },
+    })
+
+    return { questions: questions.map(QuestionMapper.toDomain), questionsCount }
   }
 
   async findQuestionById(
@@ -87,7 +96,7 @@ export class PrismaQuestionRepository implements QuestionRepository {
     authorId: string,
     page: number,
     limit: number,
-  ): Promise<Question[]> {
+  ): Promise<FindQuestionsResponse> {
     const questions = await this.prisma.question.findMany({
       skip: page,
       take: limit,
@@ -100,7 +109,9 @@ export class PrismaQuestionRepository implements QuestionRepository {
       },
     })
 
-    return questions.map(QuestionMapper.toDomain)
+    const questionsCount = await this.prisma.question.count()
+
+    return { questions: questions.map(QuestionMapper.toDomain), questionsCount }
   }
 
   async updateQuestion(

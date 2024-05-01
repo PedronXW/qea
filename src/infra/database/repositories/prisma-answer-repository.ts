@@ -1,4 +1,7 @@
-import { AnswerRepository } from '@/domain/application/repositories/answer-repository'
+import {
+  AnswerRepository,
+  FindAnswersResponse,
+} from '@/domain/application/repositories/answer-repository'
 import { Answer } from '@/domain/enterprise/entities/answer'
 import { PrismaClient } from '@prisma/client'
 import { AnswerMapper } from '../mappers/answer-mapper'
@@ -83,13 +86,20 @@ export class PrismaAnswerRepository implements AnswerRepository {
     questionId: string,
     page: number,
     limit: number,
-  ): Promise<Answer[]> {
+  ): Promise<FindAnswersResponse> {
     const answers = await this.prisma.answer.findMany({
       where: { questionId },
       skip: (page - 1) * limit,
       take: limit,
     })
 
-    return answers.map((answer) => AnswerMapper.toDomain(answer))
+    const answersCount = await this.prisma.answer.count({
+      where: { questionId },
+    })
+
+    return {
+      answers: answers.map((answer) => AnswerMapper.toDomain(answer)),
+      answersCount,
+    }
   }
 }

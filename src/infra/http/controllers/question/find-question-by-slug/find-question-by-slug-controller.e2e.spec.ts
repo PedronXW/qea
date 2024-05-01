@@ -34,8 +34,9 @@ describe('FindQuestionBySlugController', () => {
 
     expect(response.status).toBe(200)
 
-    expect(response.body).toEqual([
-      { ...question.body, answeredByCurrentUser: false },
-    ])
+    expect(response.body).toEqual({
+      questions: [{ ...question.body, answeredByCurrentUser: false }],
+      questionsCount: 1,
+    })
   })
 })

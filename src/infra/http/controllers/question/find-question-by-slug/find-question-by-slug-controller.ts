@@ -25,13 +25,16 @@ export class FindQuestionBySlugController {
 
     const { id } = findAllQuestionsZodPassSchema.parse(req.user)
 
-    const question = await this.findQuestionBySlugService.execute({
+    const questions = await this.findQuestionBySlugService.execute({
       slug,
       authorId: id,
       page,
       limit,
     })
 
-    return res.status(200).send(question.value!.map(QuestionPresenter.toHTTP))
+    return res.status(200).send({
+      questions: questions.value?.questions.map(QuestionPresenter.toHTTP),
+      questionsCount: questions.value?.questionsCount,
+    })
   }
 }

@@ -1,5 +1,6 @@
 import {
   EditQuestionProps,
+  FindQuestionsResponse,
   QuestionRepository,
 } from '@/domain/application/repositories/question-repository'
 import { Question } from '@/domain/enterprise/entities/question'
@@ -17,14 +18,19 @@ export class InMemoryQuestionRepository implements QuestionRepository {
     authorId: string,
     page: number,
     limit: number,
-  ): Promise<Question[]> {
+  ): Promise<FindQuestionsResponse> {
     const startIndex = (page - 1) * limit
 
     const endIndex = page * limit
 
-    return this.questions
-      .filter((question) => question.slug.value === slug)
-      .slice(startIndex, endIndex)
+    return {
+      questions: this.questions
+        .filter((question) => question.slug.value === slug)
+        .slice(startIndex, endIndex),
+      questionsCount: this.questions.filter(
+        (question) => question.slug.value === slug,
+      ).length,
+    }
   }
 
   async findQuestionById(
@@ -48,12 +54,15 @@ export class InMemoryQuestionRepository implements QuestionRepository {
     authorId: string,
     page: number,
     limit: number,
-  ): Promise<Question[]> {
+  ): Promise<FindQuestionsResponse> {
     const startIndex = (page - 1) * limit
 
     const endIndex = page * limit
 
-    return this.questions.slice(startIndex, endIndex)
+    return {
+      questions: this.questions.slice(startIndex, endIndex),
+      questionsCount: this.questions.length,
+    }
   }
 
   async updateQuestion(

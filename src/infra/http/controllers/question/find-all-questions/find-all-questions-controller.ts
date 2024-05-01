@@ -25,6 +25,9 @@ export class FindAllQuestionsController {
       limit,
     )
 
-    return res.status(200).send(questions.value?.map(QuestionPresenter.toHTTP))
+    return res.status(200).send({
+      questions: questions.value?.questions.map(QuestionPresenter.toHTTP),
+      questionsCount: questions.value?.questionsCount,
+    })
   }
 }

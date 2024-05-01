@@ -1,8 +1,10 @@
 import { Either, right } from '@/@shared/either'
-import { Question } from '@/domain/enterprise/entities/question'
-import { QuestionRepository } from '../../repositories/question-repository'
+import {
+  FindQuestionsResponse,
+  QuestionRepository,
+} from '../../repositories/question-repository'
 
-type FindQuestionBySlugServiceResponse = Either<null, Question[]>
+type FindQuestionBySlugServiceResponse = Either<null, FindQuestionsResponse>
 
 type FindQuestionBySlugServiceRequest = {
   slug: string

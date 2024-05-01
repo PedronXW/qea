@@ -1,4 +1,7 @@
-import { AnswerRepository } from '@/domain/application/repositories/answer-repository'
+import {
+  AnswerRepository,
+  FindAnswersResponse,
+} from '@/domain/application/repositories/answer-repository'
 import { Answer } from '@/domain/enterprise/entities/answer'
 
 export class InMemoryAnswerRepository implements AnswerRepository {
@@ -24,14 +27,19 @@ export class InMemoryAnswerRepository implements AnswerRepository {
     questionId: string,
     page: number,
     limit: number,
-  ): Promise<Answer[]> {
+  ): Promise<FindAnswersResponse> {
     const startIndex = (page - 1) * limit
 
     const endIndex = page * limit
 
-    return this.answers
-      .filter((answer) => answer.questionId.getValue() === questionId)
-      .slice(startIndex, endIndex)
+    return {
+      answers: this.answers
+        .filter((answer) => answer.questionId.getValue() === questionId)
+        .slice(startIndex, endIndex),
+      answersCount: this.answers.filter(
+        (answer) => answer.questionId.getValue() === questionId,
+      ).length,
+    }
   }
 
   async findAnswerById(id: string): Promise<Answer | null> {

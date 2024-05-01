@@ -1,11 +1,13 @@
 import { Either, right } from '@/@shared/either'
-import { Question } from '@/domain/enterprise/entities/question'
-import { QuestionRepository } from '../../repositories/question-repository'
+import {
+  FindQuestionsResponse,
+  QuestionRepository,
+} from '../../repositories/question-repository'
 
-type FindAllQuestionsServiceResponse = Either<null, Question[]>
+type FindAllQuestionsServiceResponse = Either<null, FindQuestionsResponse>
 
 export class FindAllQuestionsService {
-  constructor(private readonly questionRepository: QuestionRepository) {}
+  constructor(private questionRepository: QuestionRepository) {}
 
   async execute(
     authorId: string,
