@@ -43,14 +43,14 @@ export class PrismaUserRepository implements UserRepository {
   }
 
   async deleteUser(id: string): Promise<boolean> {
-    await this.prisma.user.update({
+    const deletedUser = await this.prisma.user.update({
       where: { id },
       data: {
         active: false,
       },
     })
 
-    return true
+    return !deletedUser.active
   }
 
   async editUser(id: string, name: string): Promise<User> {
@@ -76,15 +76,6 @@ export class PrismaUserRepository implements UserRepository {
   async getUserByEmail(email: string): Promise<User | null> {
     const user = await this.prisma.user.findUnique({
       where: { email },
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        password: true,
-        type: true,
-        createdAt: true,
-        updatedAt: true,
-      },
     })
 
     if (!user) {

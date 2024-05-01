@@ -1,6 +1,7 @@
 import { Either, left, right } from '@/@shared/either'
 import { Encrypter } from '../../criptography/encrypter'
 import { HashComparer } from '../../criptography/hash-comparer'
+import { InactiveUserError } from '../../errors/InactiveUserError'
 import { WrongCredentialError } from '../../errors/WrongCredentialsError'
 import { UserRepository } from '../../repositories/user-repository'
 
@@ -10,7 +11,7 @@ type AuthenticateUserServiceRequest = {
 }
 
 type AuthenticateUserServiceResponse = Either<
-  WrongCredentialError,
+  WrongCredentialError | InactiveUserError,
   { token: string }
 >
 
@@ -29,6 +30,10 @@ export class AuthenticateUserService {
 
     if (!user) {
       return left(new WrongCredentialError())
+    }
+
+    if (!user.active) {
+      return left(new InactiveUserError())
     }
 
     const passwordMatch = await this.hashComparer.compare(

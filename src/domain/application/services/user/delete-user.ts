@@ -1,4 +1,5 @@
 import { Either, left, right } from '@/@shared/either'
+import { CacheRepository } from '../../cache/cache-repository'
 import { UserNonExistsError } from '../../errors/UserNonExists'
 import { UserRepository } from '../../repositories/user-repository'
 
@@ -9,7 +10,10 @@ type DeleteUserServiceRequest = {
 type DeleteUserServiceResponse = Either<UserNonExistsError, boolean>
 
 export class DeleteUserService {
-  constructor(private userRepository: UserRepository) {}
+  constructor(
+    private userRepository: UserRepository,
+    private cacheRepository: CacheRepository,
+  ) {}
 
   async execute({
     id,
@@ -21,6 +25,10 @@ export class DeleteUserService {
     }
 
     const result = await this.userRepository.deleteUser(id)
+
+    if (result) {
+      await this.cacheRepository.set(`user:${id}`, JSON.stringify(new Date()))
+    }
 
     return right(result)
   }
