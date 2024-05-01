@@ -1,7 +1,6 @@
 import { Entity } from '../../../@shared/entities/entity'
 import { EntityId } from '../../../@shared/entities/entity-id'
 import { Optional } from '../../../@shared/types/optional'
-import { CreateUserEvent } from '../events/CreateUserEvent'
 
 export type UserTypes = 'ORGANIZER' | 'PARTICIPANT'
 
@@ -85,10 +84,6 @@ export class User extends Entity<UserProps> {
       },
       id,
     )
-
-    if (!id) {
-      user.addDomainEvent(new CreateUserEvent(user))
-    }
 
     return user
   }

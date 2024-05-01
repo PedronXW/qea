@@ -26,15 +26,6 @@ services:
     volumes:
       - .:/usr/app
 
-  rabbitmq-cluster:
-      image: pedronx/rabbitmq
-      container_name: rabbitmq-cluster
-      ports: 
-        - 25672:25672
-        - 15672:15672
-        - 5672:5672
-      restart: always
-
   redis:
     container_name: redis
     image: redis
