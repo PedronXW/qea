@@ -15,6 +15,10 @@ const findAnswersByQuestionIdPermissionSchema = z.object({
   type: z.enum(['ORGANIZER', 'PARTICIPANT']),
 })
 
+const findAnswersByQuestionIdAuthorSchema = z.object({
+  id: z.string().uuid(),
+})
+
 export class FindAnswersByQuestionIdController {
   constructor(
     private findAnswersByQuestionIdUseCase: FindAnswersByQuestionIdService,
@@ -29,9 +33,12 @@ export class FindAnswersByQuestionIdController {
       req.permission,
     )
 
+    const { id: authorId } = findAnswersByQuestionIdAuthorSchema.parse(req.user)
+
     const answers = await this.findAnswersByQuestionIdUseCase.execute({
       questionId: id,
       page,
+      authorId,
       authorType: type,
       limit,
     })

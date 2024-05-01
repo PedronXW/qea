@@ -6,13 +6,19 @@ const findQuestionByIdZodParamsSchema = z.object({
   id: z.string().uuid(),
 })
 
+const findAllQuestionsZodPassSchema = z.object({
+  id: z.string().uuid(),
+})
+
 export class FindQuestionByIdController {
   constructor(private findQuestionByIdService: FindQuestionByIdService) {}
 
   async handle(req, res): Promise<Response> {
     const { id } = findQuestionByIdZodParamsSchema.parse(req.params)
 
-    const question = await this.findQuestionByIdService.execute(id)
+    const { id: authorId } = findAllQuestionsZodPassSchema.parse(req.user)
+
+    const question = await this.findQuestionByIdService.execute(id, authorId)
 
     if (question.isLeft()) {
       return res.status(404).send({ error: question.value.message })

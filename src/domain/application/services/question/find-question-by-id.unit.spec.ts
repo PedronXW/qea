@@ -22,14 +22,14 @@ describe('Find Question By Id', () => {
 
     await inMemoryQuestionRepository.createQuestion(question)
 
-    const response = await sut.execute(question.id.getValue())
+    const response = await sut.execute(question.id.getValue(), 'author-id')
 
     expect(response.isRight()).toBeTruthy()
     expect(response.value).toBeInstanceOf(Question)
   })
 
   it('should not be able to find a question that does not exist', async () => {
-    const response = await sut.execute('non-existing-id')
+    const response = await sut.execute('non-existing-id', 'author-id')
 
     expect(response.isLeft()).toBeTruthy()
     expect(response.value).toBeInstanceOf(QuestionNonExistsError)

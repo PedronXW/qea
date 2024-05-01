@@ -33,6 +33,9 @@ describe('FindQuestionByIdController', () => {
       .send()
 
     expect(response.status).toBe(200)
-    expect(response.body).toEqual(question.body)
+    expect(response.body).toEqual({
+      ...question.body,
+      answeredByCurrentUser: false,
+    })
   })
 })

@@ -8,8 +8,14 @@ type FindQuestionByIdServiceResponse = Either<QuestionNonExistsError, Question>
 export class FindQuestionByIdService {
   constructor(private questionRepository: QuestionRepository) {}
 
-  async execute(questionId: string): Promise<FindQuestionByIdServiceResponse> {
-    const question = await this.questionRepository.findQuestionById(questionId)
+  async execute(
+    questionId: string,
+    authorId: string,
+  ): Promise<FindQuestionByIdServiceResponse> {
+    const question = await this.questionRepository.findQuestionById(
+      questionId,
+      authorId,
+    )
 
     if (!question) {
       return left(new QuestionNonExistsError())

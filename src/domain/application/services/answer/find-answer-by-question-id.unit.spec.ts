@@ -41,6 +41,7 @@ describe('Find Answer By Question Id', () => {
     const result = await sut.execute({
       questionId: question.id.getValue(),
       authorType: 'ORGANIZER',
+      authorId: 'any_author_id',
       page: 1,
       limit: 10,
     })
@@ -69,6 +70,7 @@ describe('Find Answer By Question Id', () => {
     const result = await sut.execute({
       questionId: question.id.getValue(),
       authorType: 'PARTICIPANT',
+      authorId: 'any_author_id',
       page: 1,
       limit: 10,
     })
@@ -89,6 +91,7 @@ describe('Find Answer By Question Id', () => {
     const result = await sut.execute({
       questionId: 'any_id',
       authorType: 'ORGANIZER',
+      authorId: 'any_author_id',
       page: 1,
       limit: 10,
     })

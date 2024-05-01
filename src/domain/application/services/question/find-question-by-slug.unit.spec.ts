@@ -23,6 +23,7 @@ describe('Find Question By Slug', () => {
 
     const response = await sut.execute({
       slug: question.slug.value,
+      authorId: 'author-id',
       page: 1,
       limit: 10,
     })
