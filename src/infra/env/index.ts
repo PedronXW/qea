@@ -10,6 +10,8 @@ const envSchema = z.object({
   JWT_SECRET: z.string(),
   RESET_PASSWORD_SECRET: z.string(),
   DATABASE_URL: z.string(),
+  REDIS_HOST: z.string().optional().default('redis'),
+  REDIS_PORT: z.coerce.number().optional().default(6379),
 })
 
 const _env = envSchema.safeParse(process.env)

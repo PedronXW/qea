@@ -48,8 +48,6 @@ describe('FindAnswerByAuthorIdInASpecificQuestionController', () => {
       .set('Authorization', `Bearer ${authenticationSecondUser.body.token}`)
       .send()
 
-    console.log(findResponse.body)
-
     expect(findResponse.status).toBe(200)
     expect(findResponse.body).toEqual({
       id: expect.any(String),

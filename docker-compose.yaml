@@ -34,3 +34,11 @@ services:
         - 15672:15672
         - 5672:5672
       restart: always
+
+  redis:
+    container_name: redis
+    image: redis
+    ports:
+      - 6379:6379
+    volumes:
+      - ./data/redis:/data

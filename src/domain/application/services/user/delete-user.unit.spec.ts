@@ -1,15 +1,18 @@
 import { User } from '@/domain/enterprise/entities/user'
+import { InMemoryCacheRepository } from 'test/cache/InMemoryCacheRepository'
 import { InMemoryUserRepository } from 'test/repositories/InMemoryUserRepository'
 import { UserNonExistsError } from '../../errors/UserNonExists'
 import { DeleteUserService } from './delete-user'
 
 let sut: DeleteUserService
 let inMemoryUserRepository: InMemoryUserRepository
+let inMemoryCacheRepository: InMemoryCacheRepository
 
 describe('DeleteUser', () => {
   beforeEach(() => {
     inMemoryUserRepository = new InMemoryUserRepository()
-    sut = new DeleteUserService(inMemoryUserRepository)
+    inMemoryCacheRepository = new InMemoryCacheRepository()
+    sut = new DeleteUserService(inMemoryUserRepository, inMemoryCacheRepository)
   })
 
   it('should be able to delete a user', async () => {

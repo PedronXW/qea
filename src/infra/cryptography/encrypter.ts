@@ -11,7 +11,7 @@ export class Encrypter implements EncryptInterface {
     factor: string = env.JWT_SECRET,
   ): Promise<string> {
     return sign(payload, factor, {
-      expiresIn: '1d',
+      expiresIn: 60 * 60, // 1 hour
     })
   }
 
