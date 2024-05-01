@@ -10,11 +10,12 @@ Toda a aplicação é desenvolvida em containers, e esses são administrados com
 
 ### Como iniciar a aplicação:
 
-- Com um terminal aberto na página raiz do projeto, rode o comando "docker compose up -d" e espere os containers ficarem disponíveis.
-- Após o primeiro passo, entre no container da aplicação, com o comando "docker compose exec qea sh"
+- Com um terminal aberto na página raiz do projeto, instale as dependencias do projeto com o comando "npm i".
+- Rode o comando "docker compose up -d" e espere os containers ficarem disponíveis.
+- Após o primeiro passo, entre no container da aplicação, com o comando "docker compose exec qea sh".
 - Com os dois passos anteriores cumpridos, poderemos utilizar nossa aplicação. Se quisermos rodar os testes, podemos utilizar o comando "npm run test-e2e" ou "npm run test-unit", dependendo do tipo de testes que você quer executar.
-- Se quiser iniciar a aplicação em produção execute os comandos "npm run build" e em seguida o comando "npm run start"
-- Se quiser iniciar a aplicação em desenvolvimento execute o comando "npm run start:dev"
+- Se quiser iniciar a aplicação em produção execute os comandos "npm run build" e em seguida o comando "npm run start".
+- Se quiser iniciar a aplicação em desenvolvimento execute o comando "npm run start:dev".
 
 ## Testes
 
