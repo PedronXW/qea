@@ -1,28 +1,19 @@
 import { app } from '@/infra/http/app'
 import request from 'supertest'
+import { createAuthenticatedUserOrganizer } from 'test/factories/e2e/authenticated-user'
 
 describe('Reset User Password', () => {
   it('should be able to reset a user password', async () => {
-    await request(app).post('/users').send({
-      name: 'John Doe',
-      type: 'ORGANIZER',
-      email: 'johndoe@johndoe.com',
-      password: '12345678',
-    })
-
-    await request(app).post('/sessions').send({
-      email: 'johndoe@johndoe.com',
-      password: '12345678',
-    })
+    const { user } = await createAuthenticatedUserOrganizer()
 
     const getResetPassword = await request(app)
       .post('/sessions/reset-password')
       .send({
-        email: 'johndoe@johndoe.com',
+        email: user.body.email,
       })
 
     const response = await request(app).put('/sessions/reset-password').send({
-      id: getResetPassword.body.validatorCode,
+      validatorCode: getResetPassword.body.validatorCode,
       password: '123456789',
     })
 
@@ -38,7 +29,8 @@ describe('Reset User Password', () => {
     })
 
     const response = await request(app).put('/sessions/reset-password').send({
-      id: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c', // invalid signature
+      validatorCode:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c', // invalid signature
       password: '123456789',
     })
 
@@ -58,7 +50,7 @@ describe('Reset User Password', () => {
     })
 
     const response = await request(app).put('/sessions/reset-password').send({
-      id: 'invalid-id', // invalid id - not a jwt
+      validatorCode: 'invalid-id', // invalid id - not a jwt
       password: '123456789',
     })
 

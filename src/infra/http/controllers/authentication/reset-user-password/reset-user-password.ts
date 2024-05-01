@@ -2,7 +2,7 @@ import { ResetUserPasswordService } from '@/domain/application/services/user/res
 import { z } from 'zod'
 
 const resetUserPasswordZodSchema = z.object({
-  id: z.string(),
+  validatorCode: z.string(),
   password: z.string(),
 })
 
@@ -12,10 +12,12 @@ export class ResetUserPasswordController {
   ) {}
 
   async handle(req, res): Promise<Response> {
-    const { id, password } = resetUserPasswordZodSchema.parse(req.body)
+    const { validatorCode, password } = resetUserPasswordZodSchema.parse(
+      req.body,
+    )
 
     const code = await this.resetUserPasswordService.execute({
-      id,
+      id: validatorCode,
       password,
     })
 
