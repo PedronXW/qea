@@ -1,28 +1,19 @@
 import { app } from '@/infra/http/app'
 import request from 'supertest'
+import { createAuthenticatedUserOrganizer } from 'test/factories/e2e/authenticated-user'
 
 describe('Send Reset Password Email', () => {
   it('should be able to send a reset password email', async () => {
-    await request(app).post('/users').send({
-      name: 'John Doe',
-      email: 'johndoe@johndoe.com',
-      type: 'ORGANIZER',
-      password: '12345678',
-    })
-
-    await request(app).post('/sessions').send({
-      email: 'johndoe@johndoe.com',
-      password: '12345678',
-    })
+    const { user } = await createAuthenticatedUserOrganizer()
 
     const getResetPassword = await request(app)
       .post('/sessions/reset-password')
       .send({
-        email: 'johndoe@johndoe.com',
+        email: user.body.email,
       })
 
     const response = await request(app).put('/sessions/reset-password').send({
-      id: getResetPassword.body.validatorCode,
+      validatorCode: getResetPassword.body.validatorCode,
       password: '123456789',
     })
 
@@ -30,17 +21,7 @@ describe('Send Reset Password Email', () => {
   })
 
   it('should not be able to send a reset password email because a wrong email', async () => {
-    await request(app).post('/users').send({
-      name: 'John Doe',
-      type: 'ORGANIZER',
-      email: 'johndoe@johndoe.com',
-      password: '12345678',
-    })
-
-    await request(app).post('/sessions').send({
-      email: 'johndoe@johndoe.com',
-      password: '12345678',
-    })
+    const { authentication } = await createAuthenticatedUserOrganizer()
 
     const sendMail = await request(app).post('/sessions/reset-password').send({
       email: 'wrongemail@wrong.com',

@@ -34,7 +34,9 @@
         "type": "object",
         "properties": {
           "error": {
-            "type": "string"
+            "type": "string",
+            "description": "Error message",
+            "example": "User not found"
           }
         }
       },
@@ -55,23 +57,34 @@
             "example": "e30bcc80-5b00-4d0f-922d-e8aad182258c"
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "description": "Name must be at least 3 characters long.",
+            "example": "John Doe"
           },
           "email": {
-            "type": "string"
+            "type": "string",
+            "format": "email",
+            "description": "Email must be a valid email.",
+            "example": "johndoe@john.com"
           },
           "type": {
             "type": "string",
             "enum": ["PARTICIPANT", "ORGANIZER"]
           },
           "password": {
-            "type": "string"
+            "type": "string",
+            "minLength": 8,
+            "description": "Password must be at least 8 characters long."
           },
-          "created_at": {
-            "type": "string"
+          "createdAt": {
+            "type": "string",
+            "description": "Date must be in ISO 8601 format.",
+            "example": "2021-06-01T00:00:00.000Z"
           },
-          "updated_at": {
-            "type": "string"
+          "updatedAt": {
+            "type": "string",
+            "description": "Date must be in ISO 8601 format.",
+            "example": "2021-06-01T00:00:00.000Z"
           }
         }
       },
@@ -84,21 +97,34 @@
             "example": "e30bcc80-5b00-4d0f-922d-e8aad182258c"
           },
           "title": {
-            "type": "string"
+            "type": "string",
+            "description": "Title must be at least 3 characters long.",
+            "example": "How to create a new question"
           },
           "slug": {
-            "type": "string"
+            "type": "string",
+            "description": "Slug must be a valid slug.",
+            "example": "how-to-create-a-new-question"
           },
           "authorId": {
             "type": "string",
             "description": "Id must be a valid uuid.",
             "example": "e30bcc80-5b00-4d0f-922d-e8aad182258c"
           },
-          "created_at": {
-            "type": "string"
+          "createdAt": {
+            "type": "string",
+            "description": "Date must be in ISO 8601 format.",
+            "example": "2021-06-01T00:00:00.000Z"
           },
-          "updated_at": {
-            "type": "string"
+          "answeredByCurrentUser":{
+            "type": "boolean",
+            "description": "Indicates if the question was answered by the current user.",
+            "example": true
+          },
+          "updatedAt": {
+            "type": "string",
+            "description": "Indicates if the question was answered by the current user.",
+            "example": "2021-06-01T00:00:00.000Z"
           }
         }
       },
@@ -111,7 +137,9 @@
             "example": "e30bcc80-5b00-4d0f-922d-e8aad182258c"
           },
           "content": {
-            "type": "string"
+            "type": "string",
+            "description": "Content must be at least 3 characters long.",
+            "example": "You can create a new question by clicking on the 'Create Question' button."
           },
           "questionId": {
             "type": "string",
@@ -123,11 +151,15 @@
             "description": "Id must be a valid uuid.",
             "example": "e30bcc80-5b00-4d0f-922d-e8aad182258c"
           },
-          "created_at": {
-            "type": "string"
+          "createdAt": {
+            "type": "string",
+            "description": "Date must be in ISO 8601 format.",
+            "example": "2021-06-01T00:00:00.000Z"
           },
-          "updated_at": {
-            "type": "string"
+          "updatedAt": {
+            "type": "string",
+            "description": "Date must be in ISO 8601 format.",
+            "example": "2021-06-01T00:00:00.000Z"
           }
         }
       }
@@ -201,7 +233,7 @@
             "schema": {
               "type": "object",
               "properties": {
-                "id": {
+                "validatorCode": {
                   "type": "string",
                   "description": "JWT sended to users mail"
                 },
