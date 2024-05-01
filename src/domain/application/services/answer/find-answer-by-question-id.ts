@@ -1,9 +1,11 @@
 import { Either, left, right } from '@/@shared/either'
-import { Answer } from '@/domain/enterprise/entities/answer'
 import { UserTypes } from '@/domain/enterprise/entities/user'
 import { PermissionError } from '../../errors/PermissionError'
 import { QuestionNonExistsError } from '../../errors/QuestionNonExistsError'
-import { AnswerRepository } from '../../repositories/answer-repository'
+import {
+  AnswerRepository,
+  FindAnswersResponse,
+} from '../../repositories/answer-repository'
 import { QuestionRepository } from '../../repositories/question-repository'
 
 type FindAnswersByQuestionIdServiceRequest = {
@@ -16,7 +18,7 @@ type FindAnswersByQuestionIdServiceRequest = {
 
 type FindAnswersByQuestionIdServiceResponse = Either<
   PermissionError | QuestionNonExistsError,
-  Answer[]
+  FindAnswersResponse
 >
 
 export class FindAnswersByQuestionIdService {

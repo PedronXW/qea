@@ -47,6 +47,9 @@ export class FindAnswersByQuestionIdController {
       return res.status(401).send({ error: answers.value.message })
     }
 
-    return res.status(200).json(answers.value!.map(AnswerPresenter.toHTTP))
+    return res.status(200).json({
+      answers: answers.value.answers.map(AnswerPresenter.toHTTP),
+      answersCount: answers.value.answersCount,
+    })
   }
 }

@@ -56,16 +56,19 @@ describe('FindAnswersByQuestionIdController', () => {
 
     expect(findResponse.status).toBe(200)
 
-    expect(findResponse.body).toEqual([
-      {
-        id: response.body.id,
-        questionId: question.body.id,
-        content: 'Answer content',
-        authorId: response.body.authorId,
-        createdAt: expect.any(String),
-        updatedAt: expect.any(String),
-      },
-    ])
+    expect(findResponse.body).toEqual({
+      answers: [
+        {
+          id: response.body.id,
+          questionId: question.body.id,
+          content: 'Answer content',
+          authorId: response.body.authorId,
+          createdAt: expect.any(String),
+          updatedAt: expect.any(String),
+        },
+      ],
+      answersCount: 1,
+    })
   })
 
   it('should not be able to find answers by question id because a permission error', async () => {

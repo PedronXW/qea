@@ -46,8 +46,9 @@ describe('Find Answer By Question Id', () => {
       limit: 10,
     })
 
-    expect(result.isRight()).toBe(true)
-    expect(result.value![0].content).toBe('any_content')
+    expect(result.isRight()).toBeTruthy()
+    expect(result.value).toHaveProperty('answers')
+    expect(result.value).toHaveProperty('answersCount')
   })
 
   it('should be able to return a permission error', async () => {

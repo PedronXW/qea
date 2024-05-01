@@ -34,18 +34,21 @@ describe('FindAllQuestionController', () => {
 
     expect(response.status).toBe(200)
 
-    expect(response.body).toEqual([
-      {
-        id: question.body.id,
-        title: 'Question title',
-        content: 'Question content',
-        authorId: question.body.authorId,
-        createdAt: expect.any(String),
-        updatedAt: expect.any(String),
-        answeredByCurrentUser: false,
-        slug: expect.any(String),
-      },
-    ])
+    expect(response.body).toEqual({
+      questions: [
+        {
+          id: question.body.id,
+          title: 'Question title',
+          content: 'Question content',
+          authorId: question.body.authorId,
+          createdAt: expect.any(String),
+          updatedAt: expect.any(String),
+          answeredByCurrentUser: false,
+          slug: expect.any(String),
+        },
+      ],
+      questionsCount: 1,
+    })
   })
 
   it('should be able to find all questions with a true result to answered question', async () => {
@@ -102,17 +105,20 @@ describe('FindAllQuestionController', () => {
 
     expect(response.status).toBe(200)
 
-    expect(response.body).toEqual([
-      {
-        id: question.body.id,
-        title: 'Question title',
-        content: 'Question content',
-        authorId: question.body.authorId,
-        createdAt: expect.any(String),
-        updatedAt: expect.any(String),
-        answeredByCurrentUser: true,
-        slug: expect.any(String),
-      },
-    ])
+    expect(response.body).toEqual({
+      questions: [
+        {
+          id: question.body.id,
+          title: 'Question title',
+          content: 'Question content',
+          authorId: question.body.authorId,
+          createdAt: expect.any(String),
+          updatedAt: expect.any(String),
+          answeredByCurrentUser: true,
+          slug: expect.any(String),
+        },
+      ],
+      questionsCount: 1,
+    })
   })
 })

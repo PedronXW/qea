@@ -5,6 +5,11 @@ export type EditQuestionProps = {
   content?: string
 }
 
+export type FindQuestionsResponse = {
+  questions: Question[]
+  questionsCount: number
+}
+
 export abstract class QuestionRepository {
   abstract createQuestion(question: Question): Promise<Question>
   abstract findQuestionBySlug(
@@ -12,7 +17,7 @@ export abstract class QuestionRepository {
     authorId: string,
     page: number,
     limit: number,
-  ): Promise<Question[]>
+  ): Promise<FindQuestionsResponse>
 
   abstract findQuestionById(
     id: string,
@@ -24,7 +29,7 @@ export abstract class QuestionRepository {
     authorId: string,
     page: number,
     limit: number,
-  ): Promise<Question[]>
+  ): Promise<FindQuestionsResponse>
 
   abstract updateQuestion(
     id: string,
