@@ -6,6 +6,7 @@ import request from 'supertest'
 type AuthenticatedUserFactory = {
   user: { body: User }
   authentication: { body: { token: string } }
+  password?: string
 }
 
 const createAuthenticatedUserOrganizer =
@@ -27,6 +28,7 @@ const createAuthenticatedUserOrganizer =
     return {
       user,
       authentication,
+      password,
     }
   }
 
@@ -49,6 +51,7 @@ const createAuthenticatedUserParticipant =
     return {
       user,
       authentication,
+      password,
     }
   }
 

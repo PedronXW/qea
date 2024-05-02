@@ -6,9 +6,8 @@
   "scripts": {
     "test-unit": "jest --config ./test/jest.config.json  --runInBand",
     "test-e2e": "jest --config ./test/jest-e2e.config.json  --runInBand",
-    "test:watch": "jest --watchAll",
-    "test:cov": "jest --coverage",
-    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
+    "test:cov-e2e": "jest --coverage --config ./test/jest-e2e.config.json  --runInBand",
+    "test:cov-unit": "jest --coverage --config ./test/jest.config.json  --runInBand",
     "start:dev": "tsx watch src/infra/server.ts",
     "start": "node build/infra/server.js",
     "build": "tsup src --out-dir build"

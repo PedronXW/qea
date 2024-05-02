@@ -15,7 +15,8 @@ services:
   qea:
     build: .
     depends_on:
-     - "qea-pg"
+      qea-pg:
+        condition: service_started
     links:
      - "qea-pg"
     container_name: qea
@@ -23,8 +24,6 @@ services:
     entrypoint: sleep infinity
     ports: 
       - 3333:3333
-    volumes:
-      - .:/usr/app
 
   redis:
     container_name: redis
@@ -32,4 +31,4 @@ services:
     ports:
       - 6379:6379
     volumes:
-      - ./data/redis:/data
+      - ./data/redis:/data/redis

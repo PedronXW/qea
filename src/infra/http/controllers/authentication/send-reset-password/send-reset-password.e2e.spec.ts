@@ -21,7 +21,7 @@ describe('Send Reset Password Email', () => {
   })
 
   it('should not be able to send a reset password email because a wrong email', async () => {
-    const { authentication } = await createAuthenticatedUserOrganizer()
+    await createAuthenticatedUserOrganizer()
 
     const sendMail = await request(app).post('/sessions/reset-password').send({
       email: 'wrongemail@wrong.com',
