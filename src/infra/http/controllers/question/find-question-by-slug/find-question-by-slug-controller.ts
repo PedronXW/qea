@@ -32,6 +32,12 @@ export class FindQuestionBySlugController {
       limit,
     })
 
+    if (questions.isLeft()) {
+      return res.status(404).send({
+        error: questions.value?.message,
+      })
+    }
+
     return res.status(200).send({
       questions: questions.value?.questions.map(QuestionPresenter.toHTTP),
       questionsCount: questions.value?.questionsCount,
