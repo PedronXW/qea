@@ -15,22 +15,25 @@ services:
   qea:
     build: .
     depends_on:
-     - "qea-pg"
+      qea-pg:
+        condition: service_started
     links:
      - "qea-pg"
-    container_name: auth
+    container_name: qea
     restart: always
     entrypoint: sleep infinity
     ports: 
       - 3333:3333
-    volumes:
-      - .:/usr/app
+    environment:
+      DATABASE_URL: postgres://postgres:docker@qea-pg:5432/qeadb
+      REDIS_URL: redis://redis:6379
+      JWT_SECRET: secret
+      RESET_PASSWORD_SECRET: reset_password_secret
 
-  rabbitmq-cluster:
-      image: pedronx/rabbitmq
-      container_name: rabbitmq-cluster
-      ports: 
-        - 25672:25672
-        - 15672:15672
-        - 5672:5672
-      restart: always
+  redis:
+    container_name: redis
+    image: redis
+    ports:
+      - 6379:6379
+    volumes:
+      - ./data/redis:/data/redis

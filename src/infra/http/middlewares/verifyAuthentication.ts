@@ -1,11 +1,14 @@
 import { verify } from 'jsonwebtoken'
 
-import { ClientEmailNotVerifiedError } from '@/domain/application/errors/ClientEmailNotVerifiedError'
+import { InactiveUserError } from '@/domain/application/errors/InactiveUserError'
+import { UserTypes } from '@/domain/enterprise/entities/user'
+import { RedisCacheRepository } from '@/infra/cache/redis-repository'
 import { env } from '@/infra/env'
 import { AppError } from '../errors/AppError'
 
 interface IPayload {
-  sub: string
+  id: string
+  type: UserTypes
 }
 
 export async function verifyAuthentication(request, response, next) {
@@ -18,18 +21,29 @@ export async function verifyAuthentication(request, response, next) {
   const [, token] = authHeader.split(' ')
 
   try {
-    const { sub: id } = verify(token, env.JWT_SECRET) as IPayload
+    const { id, type } = verify(token, env.JWT_SECRET) as IPayload
+
+    const cacheRepository = new RedisCacheRepository()
+    const isUserDeleted = await cacheRepository.get(`user:${id}`)
+
+    if (isUserDeleted) {
+      throw new InactiveUserError()
+    }
 
     request.user = {
       id,
     }
 
+    request.permission = {
+      type,
+    }
+
     next()
   } catch (error) {
-    if (error instanceof ClientEmailNotVerifiedError) {
-      throw new AppError('Client e-mail not verified', 401)
-    } else {
-      throw new AppError('Invalid token', 401)
+    if (error instanceof InactiveUserError) {
+      throw new AppError('User is inactive', 401)
     }
+
+    throw new AppError('Invalid token', 401)
   }
 }

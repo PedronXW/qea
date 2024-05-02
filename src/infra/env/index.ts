@@ -8,13 +8,10 @@ const envSchema = z.object({
     .default('development'),
   PORT: z.coerce.number().default(3333),
   JWT_SECRET: z.string(),
-  VERIFY_EMAIL_SECRET: z.string(),
   RESET_PASSWORD_SECRET: z.string(),
-  DYNAMODB_TABLE: z.string(),
-  DYNAMODB_ACCESS_KEY: z.string(),
-  DYNAMODB_SECRET_KEY: z.string(),
-  DYNAMODB_REGION: z.string(),
-  DYNAMODB_ENDPOINT: z.string(),
+  DATABASE_URL: z.string(),
+  REDIS_HOST: z.string().optional().default('redis'),
+  REDIS_PORT: z.coerce.number().optional().default(6379),
 })
 
 const _env = envSchema.safeParse(process.env)

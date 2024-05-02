@@ -1,21 +1,17 @@
 import { Router } from 'express'
+import { answersRouter } from './answers'
 import { authenticationRoutes } from './authentication'
-import { clientsRouter } from './clients'
+import { questionsRoutes } from './questions'
+import { usersRouter } from './users'
 
 const router = Router()
 
 router.use('/sessions', authenticationRoutes)
 
-router.use('/clients', clientsRouter)
+router.use('/users', usersRouter)
 
-router.get('/healthz', (req, res) => {
-  const data = {
-    uptime: process.uptime(),
-    message: 'Ok',
-    date: new Date(),
-  }
+router.use('/questions', questionsRoutes)
 
-  res.status(200).send(data)
-})
+router.use('/answers', answersRouter)
 
 export { router }

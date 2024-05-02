@@ -13,35 +13,43 @@ enum UserType {
 }
 
 model User {
-  id        String    @id @default(cuid())
-  email     String    @unique
-  name      String?
+  id        String     @id @default(uuid())
+  email     String     @unique
+  name      String
   password  String
+  active    Boolean    @default(true)
   type      UserType
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  posts     Post[]
-  Comment   Comment[]
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  questions Question[]
+  answers   Answer[]
+
+  @@map("users")
 }
 
-model Post {
-  id        String    @id @default(cuid())
+model Question {
+  id        String   @id @default(uuid())
   title     String
   content   String
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  author    User      @relation(fields: [authorId], references: [id])
-  authorId  String
-  Comment   Comment[]
-}
-
-model Comment {
-  id        String   @id @default(cuid())
-  content   String
+  slug      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   author    User     @relation(fields: [authorId], references: [id])
   authorId  String
-  post      Post     @relation(fields: [postId], references: [id])
-  postId    String
+  answers   Answer[]
+
+  @@map("questions")
+}
+
+model Answer {
+  id         String    @id @default(uuid())
+  content    String
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  author     User      @relation(fields: [authorId], references: [id])
+  authorId   String
+  question   Question? @relation(fields: [questionId], references: [id])
+  questionId String?
+
+  @@map("answers")
 }
