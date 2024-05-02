@@ -1,10 +1,14 @@
-import { Either, right } from '@/@shared/either'
+import { Either, left, right } from '@/@shared/either'
+import { PaginationError } from '../../errors/PaginationError'
 import {
   FindQuestionsResponse,
   QuestionRepository,
 } from '../../repositories/question-repository'
 
-type FindQuestionBySlugServiceResponse = Either<null, FindQuestionsResponse>
+type FindQuestionBySlugServiceResponse = Either<
+  PaginationError,
+  FindQuestionsResponse
+>
 
 type FindQuestionBySlugServiceRequest = {
   slug: string
@@ -22,6 +26,10 @@ export class FindQuestionBySlugService {
     page,
     slug,
   }: FindQuestionBySlugServiceRequest): Promise<FindQuestionBySlugServiceResponse> {
+    if (page <= 0 || limit <= 0) {
+      return left(new PaginationError())
+    }
+
     const questions = await this.questionRepository.findQuestionBySlug(
       slug,
       authorId,

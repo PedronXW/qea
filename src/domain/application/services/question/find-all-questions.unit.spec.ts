@@ -24,8 +24,14 @@ describe('Find All Questions', () => {
     const response = await sut.execute(question.authorId.getValue(), 1, 10)
 
     expect(response.isRight()).toBeTruthy()
-    expect(response.value?.questions).toHaveLength(1)
-    expect(response.value?.questions[0].title).toBe('Question title')
-    expect(response.value?.questionsCount).toBe(1)
+    expect(response.value).toEqual({
+      questions: [
+        expect.objectContaining({
+          title: 'Question title',
+          content: 'Question content',
+        }),
+      ],
+      questionsCount: 1,
+    })
   })
 })

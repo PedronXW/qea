@@ -13,7 +13,7 @@ describe('FindAllQuestionController', () => {
       .get(`/questions`)
       .set('Authorization', `Bearer ${authentication.body.token}`)
       .query({
-        page: 0,
+        page: 1,
         limit: 10,
       })
       .send()
@@ -57,7 +57,7 @@ describe('FindAllQuestionController', () => {
       .get(`/questions`)
       .set('Authorization', `Bearer ${authenticationSecondAccount.body.token}`)
       .query({
-        page: 0,
+        page: 1,
         limit: 10,
       })
       .send()

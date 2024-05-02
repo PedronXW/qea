@@ -15,7 +15,7 @@ export type CreateQuestionServiceRequest = {
 export type CreateQuestionServiceResponse = Either<PermissionError, Question>
 
 export class CreateQuestionService {
-  constructor(private readonly questionRepository: QuestionRepository) {}
+  constructor(private questionRepository: QuestionRepository) {}
 
   async execute({
     authorId,

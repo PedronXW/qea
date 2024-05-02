@@ -45,7 +45,7 @@ export class PrismaQuestionRepository implements QuestionRepository {
           },
         },
       },
-      skip: page,
+      skip: (page - 1) * limit,
       take: limit,
     })
 
@@ -98,7 +98,7 @@ export class PrismaQuestionRepository implements QuestionRepository {
     limit: number,
   ): Promise<FindQuestionsResponse> {
     const questions = await this.prisma.question.findMany({
-      skip: page,
+      skip: (page - 1) * limit,
       take: limit,
       include: {
         answers: {

@@ -13,7 +13,7 @@ describe('FindQuestionBySlugController', () => {
       .get(`/questions/slug/${question.body.slug}`)
       .set('Authorization', `Bearer ${authentication.body.token}`)
       .query({
-        page: 0,
+        page: 1,
         limit: 10,
       })
       .send()

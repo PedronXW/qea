@@ -29,7 +29,14 @@ describe('Find Question By Slug', () => {
     })
 
     expect(response.isRight()).toBeTruthy()
-    expect(response.value?.questions).toHaveLength(1)
-    expect(response.value?.questions[0].title).toBe('Question title')
+    expect(response.value).toEqual({
+      questions: [
+        expect.objectContaining({
+          title: 'Question title',
+          content: 'Question content',
+        }),
+      ],
+      questionsCount: 1,
+    })
   })
 })
