@@ -1,5 +1,6 @@
 import { Either, left, right } from '@/@shared/either'
 import { UserTypes } from '@/domain/enterprise/entities/user'
+import { PaginationError } from '../../errors/PaginationError'
 import { PermissionError } from '../../errors/PermissionError'
 import { QuestionNonExistsError } from '../../errors/QuestionNonExistsError'
 import {
@@ -17,7 +18,7 @@ type FindAnswersByQuestionIdServiceRequest = {
 }
 
 type FindAnswersByQuestionIdServiceResponse = Either<
-  PermissionError | QuestionNonExistsError,
+  PermissionError | QuestionNonExistsError | PaginationError,
   FindAnswersResponse
 >
 
@@ -36,6 +37,10 @@ export class FindAnswersByQuestionIdService {
   }: FindAnswersByQuestionIdServiceRequest): Promise<FindAnswersByQuestionIdServiceResponse> {
     if (authorType !== 'ORGANIZER') {
       return left(new PermissionError())
+    }
+
+    if (page <= 0 || limit <= 0) {
+      return left(new PaginationError())
     }
 
     const question = await this.questionRepository.findQuestionById(

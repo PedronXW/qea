@@ -1,3 +1,4 @@
+import { PermissionError } from '@/domain/application/errors/PermissionError'
 import { FindAnswersByQuestionIdService } from '@/domain/application/services/answer/find-answer-by-question-id'
 import { AnswerPresenter } from '@/infra/http/presenters/presenter-answer'
 import { z } from 'zod'
@@ -43,8 +44,10 @@ export class FindAnswersByQuestionIdController {
       limit,
     })
 
-    if (answers.isLeft()) {
+    if (answers.isLeft() && answers.value instanceof PermissionError) {
       return res.status(401).send({ error: answers.value.message })
+    } else if (answers.isLeft()) {
+      return res.status(400).send({ error: answers.value.message })
     }
 
     return res.status(200).json({
