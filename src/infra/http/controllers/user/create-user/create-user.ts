@@ -1,6 +1,6 @@
 import { CreateUserService } from '@/domain/application/services/user/create-user'
 import { UserPresenter } from '@/infra/http/presenters/presenter-user'
-import { Request, Response } from 'express'
+import { Response } from 'express'
 import { z } from 'zod'
 
 const createUserZodSchema = z.object({
@@ -13,7 +13,7 @@ const createUserZodSchema = z.object({
 export class CreateUserController {
   constructor(private createUserService: CreateUserService) {}
 
-  async handle(req: Request, res: Response): Promise<Response> {
+  async handle(req, res): Promise<Response> {
     const { name, email, password, type } = createUserZodSchema.parse(req.body)
 
     const user = await this.createUserService.execute({

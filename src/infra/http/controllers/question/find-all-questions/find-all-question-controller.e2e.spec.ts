@@ -38,39 +38,12 @@ describe('FindAllQuestionController', () => {
   })
 
   it('should be able to find all questions with a true result to answered question', async () => {
-    await request(app).post('/users').send({
-      name: 'John Doe',
-      email: 'johndoe@johndoe.com',
-      type: 'ORGANIZER',
-      password: '12345678',
-    })
+    await createAuthenticatedUserOrganizer()
 
-    const authentication = await request(app).post('/sessions').send({
-      email: 'johndoe@johndoe.com',
-      password: '12345678',
-    })
+    const { question } = await createQuestionFactory()
 
-    const question = await request(app)
-      .post('/questions')
-      .set('Authorization', `Bearer ${authentication.body.token}`)
-      .send({
-        title: 'Question title',
-        content: 'Question content',
-      })
-
-    await request(app).post('/users').send({
-      name: 'John Doe',
-      email: 'johndoe2@johndoe.com',
-      type: 'ORGANIZER',
-      password: '12345678',
-    })
-
-    const authenticationSecondAccount = await request(app)
-      .post('/sessions')
-      .send({
-        email: 'johndoe2@johndoe.com',
-        password: '12345678',
-      })
+    const { authentication: authenticationSecondAccount } =
+      await createAuthenticatedUserOrganizer()
 
     await request(app)
       .post('/answers')
