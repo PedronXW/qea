@@ -1,4 +1,4 @@
-# Teste Técnico para Desenvolvedor Backend Yazo
+# Q&A
 
 Esta aplicação é uma API desenvolvida com NodeJS, utilizando Typescript e o framework Express, ela tem por objetivo ser um serviço de perguntas e respostas com autenticação de seus usuários. Além dos elementos já citados ela também utiliza de bancos de dados PostgreSQL, gerenciado pela aplicação com a utilização de um ORM chamado Prisma, assim como a utilização de Redis, este último para gerenciamento de usuários excluídos.
 
